@@ -29,7 +29,7 @@ export default {
 }
 ```
 
-If you want to manage BrowserSync or override default behavior of this plugin (see below), you can pass a `bs` object with your [BrowserSync options](https://browsersync.io/docs/options) in it :
+If you want to manage BrowserSync or [override default behavior of this plugin](https://github.com/Applelo/vite-plugin-browser-sync#vite-plugin-browser-sync-options-for-browsersync), you can pass a `bs` object with your [BrowserSync options](https://browsersync.io/docs/options) in it :
 
 ```js
 // vite.config.js / vite.config.ts
@@ -49,7 +49,7 @@ export default {
 }
 ```
 
-This plugin also supports the `snippet` mode of BrowserSync by injecting the script automatically on dev mode.
+If you need the `snippet` mode of BrowserSync, the plugin supports it by injecting the script automatically.
 
 ```js
 // vite.config.js / vite.config.ts
@@ -66,7 +66,7 @@ export default {
 
 ## vite-plugin-browser-sync options for BrowserSync
 
-This plugin overrides default options from BrowserSync to don't duplicate behavior already managed by ViteJS.
+This plugin overrides default options from BrowserSync to doesn't duplicate behavior already managed by ViteJS.
 
 | Option                                                                    | Why                                                                                   |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
