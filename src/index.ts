@@ -8,14 +8,6 @@ interface Options {
   bs?: browserSync.Options
 }
 
-const getBsClientUrl = (options: browserSync.Options) => {
-  const https = typeof options.https !== 'undefined' && options.https !== false
-
-  return `${https ? 'https' : 'http'}://${
-    options.host ? options.host : 'localhost'
-  }:${options.port ? options.port : 3000}`
-}
-
 export default function VitePluginBrowserSync(options?: Options): Plugin {
   const name = 'vite-plugin-browser-sync'
   let bs: browserSync.BrowserSyncInstance
@@ -32,8 +24,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
         mode = 'proxy'
       }
 
-      // TODO: Fix websocket of vitejs
-      // if no hrm client port specify and proxy mode enabled => redirect port to server port
+      // if no hrm client port specify and proxy mode enabled => redirect hmr client port to server port
       if (
         mode === 'proxy' &&
         !(
@@ -42,11 +33,11 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       ) {
         if (!config.server) {
           config.server = {}
-          // config.server.strictPort = true
+          config.server.strictPort = true
         }
         if (typeof config.server.hmr !== 'object') {
           config.server.hmr = {}
-          config.server.hmr.port = 11111
+          config.server.hmr.clientPort = config.server.port || 5173
         }
       }
 
@@ -67,6 +58,14 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
         bsOptions.open = typeof config.server.open !== 'undefined'
       }
 
+      // Handle by vite so we disable it
+      if (typeof bsOptions.codeSync === 'undefined') {
+        bsOptions.codeSync = false
+      }
+      if (typeof bsOptions.injectChanges === 'undefined') {
+        bsOptions.injectChanges = false
+      }
+
       if (mode === 'snippet') {
         // disable log snippet because it is handle by the plugin
         bsOptions.logSnippet = false
@@ -75,11 +74,10 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       }
 
       if (mode === 'proxy' && !bsOptions.proxy) {
-        console.log(server.resolvedUrls)
         bsOptions.proxy =
           server.resolvedUrls?.local[0] ||
           `${config.server.https ? 'https' : 'http'}://localhost:${
-            config.server.port || '5173'
+            config.server.port || 5173
           }/`
       }
 
@@ -91,13 +89,18 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
         const server = ctx.server
         if (mode !== 'snippet' || !bs.active || !server) return html
 
+        const https =
+          typeof bsOptions.https !== 'undefined' && bsOptions.https !== false
+
         const bsScript: HtmlTagDescriptor = {
           tag: 'script',
           attrs: {
             async: '',
-            src: `${getBsClientUrl(
-              bsOptions
-            )}/browser-sync/browser-sync-client.js?v=${bsClientVersion}`
+            src: `${https ? 'https' : 'http'}://${
+              bsOptions.host ? bsOptions.host : 'localhost'
+            }:${
+              bsOptions.port ? bsOptions.port : 3000
+            }/browser-sync/browser-sync-client.js?v=${bsClientVersion}`
           },
           injectTo: 'body'
         }
