@@ -62,9 +62,6 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       if (typeof bsOptions.codeSync === 'undefined') {
         bsOptions.codeSync = false
       }
-      if (typeof bsOptions.injectChanges === 'undefined') {
-        bsOptions.injectChanges = false
-      }
 
       if (mode === 'snippet') {
         // disable log snippet because it is handle by the plugin

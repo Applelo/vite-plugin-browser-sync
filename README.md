@@ -68,12 +68,11 @@ export default {
 
 This plugin overrides default options from BrowserSync to doesn't duplicate behavior already managed by ViteJS.
 
-| Option                                                                    | Why                                                                                   |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| [logPrefix](https://browsersync.io/docs/options#option-logPrefix)         | Use `vite-plugin-browser-sync` to harmonize log outputs                               |
-| [open](https://browsersync.io/docs/options#option-open)                   | Apply ViteJS [open option](https://vitejs.dev/config/server-options.html#server-open) |
-| [codeSync](https://browsersync.io/docs/options#option-codeSync)           | Already managed by ViteJS                                                             |
-| [injectChanges](https://browsersync.io/docs/options#option-injectChanges) | Already managed by ViteJS                                                             |
+| Option                                                            | Why                                                                                   |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| [logPrefix](https://browsersync.io/docs/options#option-logPrefix) | Use `vite-plugin-browser-sync` to harmonize log outputs                               |
+| [open](https://browsersync.io/docs/options#option-open)           | Apply ViteJS [open option](https://vitejs.dev/config/server-options.html#server-open) |
+| [codeSync](https://browsersync.io/docs/options#option-codeSync)   | Already managed by ViteJS                                                             |
 
 ### For `proxy` mode
 
