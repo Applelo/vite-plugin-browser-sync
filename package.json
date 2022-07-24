@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-browser-sync",
   "version": "1.0.0",
-  "description": "Easily use BrowserSync in your Vite project",
+  "description": "Add BrowserSync in your Vite project",
   "author": "Applelo",
   "license": "GPL-3.0",
   "homepage": "https://github.com/Applelo/vite-plugin-browser-sync",

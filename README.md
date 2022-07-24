@@ -2,7 +2,7 @@
 
 # vite-plugin-browser-sync
 
-Easily use BrowserSync in your Vite project
+Add [BrowserSync](https://browsersync.io) in your Vite project
 
 ## 📦 Install
 
