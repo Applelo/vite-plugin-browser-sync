@@ -46,7 +46,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
     configResolved(_config) {
       config = _config
     },
-    configureServer(server) {
+    async configureServer(server) {
       bs = browserSync.create(name)
 
       // prepare browser sync options
@@ -78,7 +78,15 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
           }/`
       }
 
-      bs.init(bsOptions)
+      if (process.env.VITEST) {
+        await new Promise(resolve => {
+          bs.init(bsOptions, () => {
+            resolve(true)
+          })
+        })
+      } else {
+        bs.init(bsOptions)
+      }
     },
     transformIndexHtml: {
       enforce: 'post',
