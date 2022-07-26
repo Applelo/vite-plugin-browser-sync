@@ -3,7 +3,7 @@ import browserSync from 'browser-sync'
 
 type OptionsType = 'snippet' | 'proxy'
 
-interface Options {
+export interface Options {
   mode?: OptionsType
   bs?: browserSync.Options
 }
