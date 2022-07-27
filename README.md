@@ -80,7 +80,8 @@ export default {
 
 ## vite-plugin-browser-sync options for BrowserSync
 
-This plugin overrides default options from BrowserSync to doesn't duplicate behavior already managed by ViteJS and sync with ViteJS Config. If you want to change the overrided options you free to do so.
+This plugin overrides default options from BrowserSync to doesn't duplicate behaviors already managed by ViteJS. Futhermore, it syncs with your ViteJS Config.
+If you want to change the overrided options you free to do so via the `bs` object.
 
 | Option                                                            | Why                                                                                                                            |
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -92,10 +93,10 @@ This plugin overrides default options from BrowserSync to doesn't duplicate beha
 
 ### For `proxy` mode
 
-| Option                                                           | Why                                                 |
-| ---------------------------------------------------------------- | --------------------------------------------------- |
-| [proxy.target](https://browsersync.io/docs/options#option-proxy) | Inject the right url from ViteJS                    |
-| [proxy.ws](https://browsersync.io/docs/options#option-proxy)     | Forced websocket proxy to make work HMR from ViteJS |
+| Option                                                           | Why                                            |
+| ---------------------------------------------------------------- | ---------------------------------------------- |
+| [proxy.target](https://browsersync.io/docs/options#option-proxy) | Inject the right url from ViteJS               |
+| [proxy.ws](https://browsersync.io/docs/options#option-proxy)     | Forced websocket proxy to make work ViteJS HMR |
 
 ### For `snippet` mode
 
