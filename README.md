@@ -4,6 +4,12 @@
 
 Add [BrowserSync](https://browsersync.io) in your Vite project
 
+<p align="center">
+<a href="https://github.com/Applelo/vite-plugin-browser-sync/blob/main/screenshot.png?raw=true">
+<img src="https://raw.githubusercontent.com/Applelo/vite-plugin-browser-sync/main/screenshot.png?raw=true"/>
+</a>
+</p>
+
 ## 📦 Install
 
 ```

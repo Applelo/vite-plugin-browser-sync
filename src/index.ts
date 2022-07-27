@@ -24,6 +24,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       config = _config
     },
     configureServer(server) {
+      let viteJSLog = false
       bs = browserSync.create(name)
 
       // prepare browser sync options
@@ -33,6 +34,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
 
       if (typeof bsOptions.logLevel === 'undefined') {
         bsOptions.logLevel = 'silent'
+        viteJSLog = true
       }
 
       if (typeof bsOptions.open === 'undefined') {
@@ -91,45 +93,43 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
 
         await new Promise(resolve => {
           bs.init(bsOptions, () => {
-            if (bsOptions.logLevel === 'silent') {
-              const _print = server.printUrls
-              const urls: Record<string, string> = bs.getOption('urls').toJS()
-
-              const colorUrl = (url: string) =>
-                lightYellow(
-                  url.replace(/:(\d+)$/, (_, port) => `:${bold(port)}/`)
-                )
-
-              server.printUrls = () => {
-                _print()
-
-                const consoleTexts =
-                  mode === 'snippet'
-                    ? { ui: 'UI' }
-                    : {
-                        local: 'Local',
-                        external: 'External',
-                        ui: 'UI',
-                        'ui-external': 'UI External'
-                      }
-                for (const key in consoleTexts) {
-                  if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
-                    const text = consoleTexts[key]
-                    if (Object.prototype.hasOwnProperty.call(urls, key)) {
-                      console.log(
-                        `  ${lightYellow('➜')}  ${bold(
-                          'BrowserSync - ' + text
-                        )}: ${colorUrl(urls[key])}`
-                      )
-                    }
-                  }
-                }
-              }
-            }
             resolve(true)
           })
         })
         return out
+      }
+
+      if (viteJSLog) {
+        const _print = server.printUrls
+
+        const colorUrl = (url: string) =>
+          lightYellow(url.replace(/:(\d+)$/, (_, port) => `:${bold(port)}/`))
+        server.printUrls = () => {
+          const urls: Record<string, string> = bs.getOption('urls').toJS()
+          _print()
+
+          const consoleTexts =
+            mode === 'snippet'
+              ? { ui: 'UI' }
+              : {
+                  local: 'Local',
+                  external: 'External',
+                  ui: 'UI',
+                  'ui-external': 'UI External'
+                }
+          for (const key in consoleTexts) {
+            if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
+              const text = consoleTexts[key]
+              if (Object.prototype.hasOwnProperty.call(urls, key)) {
+                console.log(
+                  `  ${lightYellow('➜')}  ${bold(
+                    'BrowserSync - ' + text
+                  )}: ${colorUrl(urls[key])}`
+                )
+              }
+            }
+          }
+        }
       }
 
       const _close = server.close
