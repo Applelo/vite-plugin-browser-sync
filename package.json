@@ -47,7 +47,8 @@
   },
   "dependencies": {
     "@types/browser-sync": "^2.26.3",
-    "browser-sync": "^2.27.10"
+    "browser-sync": "^2.27.10",
+    "kolorist": "^1.5.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.31.0",
@@ -57,7 +58,6 @@
     "eslint-define-config": "^1.5.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
-    "node-fetch": "^3.2.9",
     "playwright": "^1.24.1",
     "prettier": "^2.7.1",
     "tsup": "^6.2.0",

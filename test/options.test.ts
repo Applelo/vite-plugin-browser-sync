@@ -34,7 +34,7 @@ interface TestConfig {
   url: string
 }
 
-const config: Record<string, TestConfig> = {
+const configProxy: Record<string, TestConfig> = {
   default: {
     vite: {},
     plugin: {},
@@ -47,7 +47,7 @@ const config: Record<string, TestConfig> = {
       }
     },
     plugin: {},
-    url: 'http://localhost:3002'
+    url: 'http://localhost:3001'
   },
   'custom browsersync proxy': {
     vite: {},
@@ -66,7 +66,7 @@ const config: Record<string, TestConfig> = {
 }
 
 describe('proxy option', () => {
-  for (const [name, { vite, plugin, url }] of Object.entries(config)) {
+  for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
     it(name, async () => {
       const server = await createServer({
         // any valid user config options, plus `mode` and `configFile`
@@ -76,15 +76,34 @@ describe('proxy option', () => {
         ...vite
       })
       await server.listen()
+      // server.printUrls()
 
       // need to use playwright to test the proxy
       await page.goto(url)
-      const title = await page.title()
-      const content = await page.content()
+      const script = await page.$(
+        'script[src="/browser-sync/browser-sync-client.js?v=2.27.10"]'
+      )
 
       server.close()
-      expect(title).toBe('Vite Plugin Browser Sync')
-      expect(content).matchSnapshot()
+      expect(script).not.toBeNull()
     })
   }
+})
+
+it('snippet option', async () => {
+  const server = await createServer({
+    // any valid user config options, plus `mode` and `configFile`
+    configFile: false,
+    root: resolve(__dirname, './../demo'),
+    plugins: [VitePluginBrowserSync({ mode: 'snippet' })]
+  })
+  await server.listen()
+
+  await page.goto('http://127.0.0.1:5173/')
+  const script = await page.$(
+    'script[src="http://localhost:3000/browser-sync/browser-sync-client.js?v=2.27.10"]'
+  )
+
+  server.close()
+  expect(script).not.toBeNull()
 })

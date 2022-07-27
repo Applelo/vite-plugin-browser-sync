@@ -1,5 +1,6 @@
 import type { Plugin, HtmlTagDescriptor, ResolvedConfig } from 'vite'
 import browserSync from 'browser-sync'
+import { bold, lightYellow } from 'kolorist'
 
 type OptionsType = 'snippet' | 'proxy'
 
@@ -19,39 +20,19 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
   return {
     name,
     apply: 'serve',
-    config(config) {
-      if (bsOptions.proxy) {
-        mode = 'proxy'
-      }
-
-      // if no hrm client port specify and proxy mode enabled => redirect hmr client port to server port
-      if (
-        mode === 'proxy' &&
-        !(
-          typeof config.server?.hmr === 'object' && config.server.hmr.clientPort
-        )
-      ) {
-        if (!config.server) {
-          config.server = {}
-          config.server.strictPort = true
-        }
-        if (typeof config.server.hmr !== 'object') {
-          config.server.hmr = {}
-          config.server.hmr.clientPort = config.server.port || 5173
-        }
-      }
-
-      return config
-    },
     configResolved(_config) {
       config = _config
     },
-    async configureServer(server) {
+    configureServer(server) {
       bs = browserSync.create(name)
 
       // prepare browser sync options
       if (typeof bsOptions.logPrefix === 'undefined') {
         bsOptions.logPrefix = name
+      }
+
+      if (typeof bsOptions.logLevel === 'undefined') {
+        bsOptions.logLevel = 'silent'
       }
 
       if (typeof bsOptions.open === 'undefined') {
@@ -70,22 +51,91 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
         bsOptions.snippet = false
       }
 
-      if (mode === 'proxy' && !bsOptions.proxy) {
-        bsOptions.proxy =
-          server.resolvedUrls?.local[0] ||
-          `${config.server.https ? 'https' : 'http'}://localhost:${
-            config.server.port || 5173
-          }/`
+      if (bsOptions.proxy) {
+        mode = 'proxy'
       }
 
-      if (process.env.VITEST) {
+      bsOptions.online =
+        bsOptions.online === true ||
+        typeof config.server.host !== 'undefined' ||
+        false
+
+      const _listen = server.listen
+      server.listen = async () => {
+        const out = await _listen()
+
+        if (mode === 'proxy') {
+          const target =
+            server.resolvedUrls?.local[0] ||
+            `${config.server.https ? 'https' : 'http'}://localhost:${
+              config.server.port || 5173
+            }/`
+
+          if (!bsOptions.proxy) {
+            bsOptions.proxy = {
+              target,
+              ws: true
+            }
+          } else if (typeof bsOptions.proxy === 'string') {
+            bsOptions.proxy = {
+              target: bsOptions.proxy,
+              ws: true
+            }
+          } else if (
+            typeof bsOptions.proxy === 'object' &&
+            !bsOptions.proxy.ws
+          ) {
+            bsOptions.proxy.ws = true
+          }
+        }
+
         await new Promise(resolve => {
           bs.init(bsOptions, () => {
+            if (bsOptions.logLevel === 'silent') {
+              const _print = server.printUrls
+              const urls: Record<string, string> = bs.getOption('urls').toJS()
+
+              const colorUrl = (url: string) =>
+                lightYellow(
+                  url.replace(/:(\d+)$/, (_, port) => `:${bold(port)}/`)
+                )
+
+              server.printUrls = () => {
+                _print()
+
+                const consoleTexts =
+                  mode === 'snippet'
+                    ? { ui: 'UI' }
+                    : {
+                        local: 'Local',
+                        external: 'External',
+                        ui: 'UI',
+                        'ui-external': 'UI External'
+                      }
+                for (const key in consoleTexts) {
+                  if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
+                    const text = consoleTexts[key]
+                    if (Object.prototype.hasOwnProperty.call(urls, key)) {
+                      console.log(
+                        `  ${lightYellow('➜')}  ${bold(
+                          'BrowserSync - ' + text
+                        )}: ${colorUrl(urls[key])}`
+                      )
+                    }
+                  }
+                }
+              }
+            }
             resolve(true)
           })
         })
-      } else {
-        bs.init(bsOptions)
+        return out
+      }
+
+      const _close = server.close
+      server.close = async () => {
+        bs.exit()
+        await _close()
       }
     },
     transformIndexHtml: {
