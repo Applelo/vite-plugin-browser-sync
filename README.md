@@ -10,6 +10,14 @@ Add [BrowserSync](https://browsersync.io) in your Vite project
 </a>
 </p>
 
+## 🚀 Features
+
+- ⚡ Fully integrates in your ViteJS environment
+- 👌 Zero config available for common use cases
+- ✨ All the [BrowserSync features](https://browsersync.io/) not present on ViteJS in your project
+- 🙌 Support for BrowserSync `proxy` and `snippet` mode
+- 🔥 Liberty to manage BrowserSync options
+
 ## 📦 Install
 
 ```
@@ -24,7 +32,7 @@ pnpm add -D vite-plugin-browser-sync
 
 ## 👨‍💻 Usage
 
-Browsersync starts alongside with your Vite Server. By default, it uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it works !
+BrowserSync starts alongside with your Vite Server. By default, it uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it works !
 
 ```js
 // vite.config.js / vite.config.ts
@@ -72,29 +80,29 @@ export default {
 
 ## vite-plugin-browser-sync options for BrowserSync
 
-This plugin overrides default options from BrowserSync to doesn't duplicate behavior already managed by ViteJS and sync with ViteJS Config.
+This plugin overrides default options from BrowserSync to doesn't duplicate behavior already managed by ViteJS and sync with ViteJS Config. If you want to change the overrided options you free to do so.
 
 | Option                                                            | Why                                                                                                                            |
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | [logPrefix](https://browsersync.io/docs/options#option-logPrefix) | Use `vite-plugin-browser-sync` to harmonize log outputs                                                                        |
 | [logLevel](https://browsersync.io/docs/options#option-logLevel)   | Set to `silent`, use ViteJS [printUrls](https://vitejs.dev/guide/api-javascript.html#createserver) to display BrowserSync info |
 | [open](https://browsersync.io/docs/options#option-open)           | Apply ViteJS [open option](https://vitejs.dev/config/server-options.html#server-open)                                          |
-| [codeSync](https://browsersync.io/docs/options#option-codeSync)   | Disable because it is already managed by ViteJS                                                                                |
-| [online](https://browsersync.io/docs/options#option-online)       | Sync with the [server host option](https://vitejs.dev/config/server-options.html#server-host)                                  |
+| [codeSync](https://browsersync.io/docs/options#option-codeSync)   | Disabled because it is already managed by ViteJS                                                                               |
+| [online](https://browsersync.io/docs/options#option-online)       | Synced with the [server host option](https://vitejs.dev/config/server-options.html#server-host)                                |
 
 ### For `proxy` mode
 
-| Option                                                           | Why                                                |
-| ---------------------------------------------------------------- | -------------------------------------------------- |
-| [proxy.target](https://browsersync.io/docs/options#option-proxy) | Inject the right url from ViteJS                   |
-| [proxy.ws](https://browsersync.io/docs/options#option-proxy)     | Force websocket proxy to make work HMR from ViteJS |
+| Option                                                           | Why                                                 |
+| ---------------------------------------------------------------- | --------------------------------------------------- |
+| [proxy.target](https://browsersync.io/docs/options#option-proxy) | Inject the right url from ViteJS                    |
+| [proxy.ws](https://browsersync.io/docs/options#option-proxy)     | Forced websocket proxy to make work HMR from ViteJS |
 
 ### For `snippet` mode
 
-| Option                                                              | Why                                                       |
-| ------------------------------------------------------------------- | --------------------------------------------------------- |
-| [logSnippet](https://browsersync.io/docs/options#option-logSnippet) | Manage by the plugin so don't need to display the snippet |
-| [snippet](https://browsersync.io/docs/options#option-snippet)       | The injection is managed by the plugin                    |
+| Option                                                              | Why                                                    |
+| ------------------------------------------------------------------- | ------------------------------------------------------ |
+| [logSnippet](https://browsersync.io/docs/options#option-logSnippet) | Handle by the plugin so no need to display the snippet |
+| [snippet](https://browsersync.io/docs/options#option-snippet)       | The snippet injection is handle by the plugin          |
 
 ## 👨‍💼 Licence
 
