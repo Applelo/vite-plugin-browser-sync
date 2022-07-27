@@ -66,15 +66,15 @@ export default {
 
 ## vite-plugin-browser-sync options for BrowserSync
 
-This plugin overrides default options from BrowserSync to doesn't duplicate behavior already managed by ViteJS.
+This plugin overrides default options from BrowserSync to doesn't duplicate behavior already managed by ViteJS and sync with ViteJS Config.
 
-| Option                                                            | Why                                                                                                |
-| ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| [logPrefix](https://browsersync.io/docs/options#option-logPrefix) | Use `vite-plugin-browser-sync` to harmonize log outputs                                            |
-| [logLevel](https://browsersync.io/docs/options#option-logLevel)   | Set to `silent`, use ViteJS [printUrls](https://vitejs.dev/guide/api-javascript.html#createserver) |
-| [open](https://browsersync.io/docs/options#option-open)           | Apply ViteJS [open option](https://vitejs.dev/config/server-options.html#server-open)              |
-| [codeSync](https://browsersync.io/docs/options#option-codeSync)   | Disable because it is already managed by ViteJS                                                    |
-| [online](https://browsersync.io/docs/options#option-online)       | Sync with the [server host option](https://vitejs.dev/config/server-options.html#server-host)      |
+| Option                                                            | Why                                                                                                                            |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| [logPrefix](https://browsersync.io/docs/options#option-logPrefix) | Use `vite-plugin-browser-sync` to harmonize log outputs                                                                        |
+| [logLevel](https://browsersync.io/docs/options#option-logLevel)   | Set to `silent`, use ViteJS [printUrls](https://vitejs.dev/guide/api-javascript.html#createserver) to display BrowserSync info |
+| [open](https://browsersync.io/docs/options#option-open)           | Apply ViteJS [open option](https://vitejs.dev/config/server-options.html#server-open)                                          |
+| [codeSync](https://browsersync.io/docs/options#option-codeSync)   | Disable because it is already managed by ViteJS                                                                                |
+| [online](https://browsersync.io/docs/options#option-online)       | Sync with the [server host option](https://vitejs.dev/config/server-options.html#server-host)                                  |
 
 ### For `proxy` mode
 
