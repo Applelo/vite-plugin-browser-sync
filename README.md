@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/vite-plugin-browser-sync)](https://github.com/Applelo/vite-plugin-browser-sync) [![node-current](https://img.shields.io/node/v/vite-plugin-browser-sync)](https://nodejs.org/)
+[![npm](https://img.shields.io/npm/v/vite-plugin-browser-sync)](https://www.npmjs.com/package/vite-plugin-browser-sync) [![node-current](https://img.shields.io/node/v/vite-plugin-browser-sync)](https://nodejs.org/)
 
 # vite-plugin-browser-sync
 
@@ -12,9 +12,9 @@ Add [BrowserSync](https://browsersync.io) in your Vite project
 
 ## 🚀 Features
 
-- ⚡ Fully integrates in your ViteJS environment
+- ⚡ Fully integrate in your ViteJS environment
 - 👌 Zero config available for common use cases
-- ✨ All the [BrowserSync features](https://browsersync.io/) not present on ViteJS in your project
+- ✨ All the [BrowserSync features](https://browsersync.io/)
 - 🙌 Support for BrowserSync `proxy` and `snippet` mode
 - 🔥 Liberty to manage BrowserSync options
 
@@ -32,7 +32,7 @@ pnpm add -D vite-plugin-browser-sync
 
 ## 👨‍💻 Usage
 
-BrowserSync starts alongside with your Vite Server. By default, it uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it works !
+BrowserSync starts alongside your Vite Server. By default, it uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it works !
 
 ```js
 // vite.config.js / vite.config.ts
@@ -80,16 +80,16 @@ export default {
 
 ## vite-plugin-browser-sync options for BrowserSync
 
-This plugin overrides default options from BrowserSync to doesn't duplicate behaviors already managed by ViteJS. Futhermore, it syncs with your ViteJS Config.
+This plugin overrides default options from BrowserSync to doesn't duplicate behaviors already handle by ViteJS. Futhermore, it syncs with your ViteJS Config.
+
 If you want to change the overrided options you free to do so via the `bs` object.
 
-| Option                                                            | Why                                                                                                                            |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| [logPrefix](https://browsersync.io/docs/options#option-logPrefix) | Use `vite-plugin-browser-sync` to harmonize log outputs                                                                        |
-| [logLevel](https://browsersync.io/docs/options#option-logLevel)   | Set to `silent`, use ViteJS [printUrls](https://vitejs.dev/guide/api-javascript.html#createserver) to display BrowserSync info |
-| [open](https://browsersync.io/docs/options#option-open)           | Apply ViteJS [open option](https://vitejs.dev/config/server-options.html#server-open)                                          |
-| [codeSync](https://browsersync.io/docs/options#option-codeSync)   | Disabled because it is already managed by ViteJS                                                                               |
-| [online](https://browsersync.io/docs/options#option-online)       | Synced with the [server host option](https://vitejs.dev/config/server-options.html#server-host)                                |
+| Option                                                          | Why                                                                                                                            |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| [logLevel](https://browsersync.io/docs/options#option-logLevel) | Set to `silent`, use ViteJS [printUrls](https://vitejs.dev/guide/api-javascript.html#createserver) to display BrowserSync info |
+| [open](https://browsersync.io/docs/options#option-open)         | Apply ViteJS [open option](https://vitejs.dev/config/server-options.html#server-open)                                          |
+| [codeSync](https://browsersync.io/docs/options#option-codeSync) | Disabled because it is already handle by ViteJS                                                                                |
+| [online](https://browsersync.io/docs/options#option-online)     | Synced with the [server host option](https://vitejs.dev/config/server-options.html#server-host)                                |
 
 ### For `proxy` mode
 

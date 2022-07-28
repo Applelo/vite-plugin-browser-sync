@@ -11,8 +11,8 @@ export interface Options {
 
 export default function VitePluginBrowserSync(options?: Options): Plugin {
   const name = 'vite-plugin-browser-sync'
-  let bs: browserSync.BrowserSyncInstance
   const bsClientVersion = '2.27.10'
+  let bs: browserSync.BrowserSyncInstance
   let config: ResolvedConfig
   let mode: OptionsType = options?.mode || 'proxy'
   const bsOptions: browserSync.Options = options?.bs || {}
@@ -26,11 +26,6 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
     configureServer(server) {
       let viteJSLog = false
       bs = browserSync.create(name)
-
-      // prepare browser sync options
-      if (typeof bsOptions.logPrefix === 'undefined') {
-        bsOptions.logPrefix = name
-      }
 
       if (typeof bsOptions.logLevel === 'undefined') {
         bsOptions.logLevel = 'silent'
@@ -143,19 +138,13 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       transform: (html, ctx) => {
         const server = ctx.server
         if (mode !== 'snippet' || !bs.active || !server) return html
-
-        const https =
-          typeof bsOptions.https !== 'undefined' && bsOptions.https !== false
+        const urls: Record<string, string> = bs.getOption('urls').toJS()
 
         const bsScript: HtmlTagDescriptor = {
           tag: 'script',
           attrs: {
             async: '',
-            src: `${https ? 'https' : 'http'}://${
-              bsOptions.host ? bsOptions.host : 'localhost'
-            }:${
-              bsOptions.port ? bsOptions.port : 3000
-            }/browser-sync/browser-sync-client.js?v=${bsClientVersion}`
+            src: `${urls.local}/browser-sync/browser-sync-client.js?v=${bsClientVersion}`
           },
           injectTo: 'body'
         }
