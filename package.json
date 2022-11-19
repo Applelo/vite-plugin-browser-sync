@@ -31,16 +31,18 @@
     "dist"
   ],
   "engines": {
-    "node": ">= 14"
+    "node": ">=14.18.0"
   },
   "scripts": {
     "format": "prettier --write --cache .",
+    "format:check": "prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "tsup src/index.ts --dts --format cjs,esm",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "vite": "^2.9.0 || ^3.0.0-0"
@@ -48,21 +50,23 @@
   "dependencies": {
     "@types/browser-sync": "^2.26.3",
     "browser-sync": "^2.27.10",
-    "kolorist": "^1.5.1"
+    "kolorist": "^1.6.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
-    "eslint": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
+    "@vitest/coverage-c8": "^0.25.2",
+    "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-define-config": "^1.5.1",
+    "eslint-define-config": "^1.12.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
-    "playwright": "^1.24.1",
+    "playwright": "^1.28.0",
     "prettier": "^2.7.1",
-    "tsup": "^6.2.0",
-    "typescript": "^4.7.4",
-    "vite": "^3.0.3",
-    "vitest": "^0.19.1"
-  }
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.3",
+    "vite": "^3.2.4",
+    "vitest": "^0.25.2"
+  },
+  "packageManager": "pnpm@7.3.0"
 }

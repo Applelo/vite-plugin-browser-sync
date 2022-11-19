@@ -9,13 +9,18 @@ export interface Options {
   bs?: browserSync.Options
 }
 
+//"snippet" exists in the doc but not in the type def
+interface OptionsBS extends browserSync.Options {
+  snippet: boolean
+}
+
 export default function VitePluginBrowserSync(options?: Options): Plugin {
   const name = 'vite-plugin-browser-sync'
   const bsClientVersion = '2.27.10'
   let bs: browserSync.BrowserSyncInstance
   let config: ResolvedConfig
   let mode: OptionsType = options?.mode || 'proxy'
-  const bsOptions: browserSync.Options = options?.bs || {}
+  const bsOptions = (options?.bs as OptionsBS) || {}
 
   return {
     name,
@@ -44,7 +49,6 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       if (mode === 'snippet') {
         // disable log snippet because it is handle by the plugin
         bsOptions.logSnippet = false
-        // @ts-ignore Exist in the documentation but not in the type definition
         bsOptions.snippet = false
       }
 

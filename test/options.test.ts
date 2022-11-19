@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { Browser, chromium, Page } from 'playwright'
 import {
   it,

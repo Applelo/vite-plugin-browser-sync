@@ -19,8 +19,7 @@
     /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     "lib": ["DOM"],
     "declaration": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "resolveJsonModule": true
+    "suppressImplicitAnyIndexErrors": true
   },
-  "exclude": ["node_modules", "test", "dist", "demo"]
+  "exclude": ["node_modules", "test", "dist", "demo", "vitest.config.ts"]
 }
