@@ -54,6 +54,11 @@ const configProxy: Record<string, TestConfig> = {
     plugin: { bs: { proxy: 'http://localhost:5173' } },
     url: 'http://localhost:3000'
   },
+  'custom browsersync proxy object': {
+    vite: {},
+    plugin: { bs: { proxy: { target: 'http://localhost:5173' } } },
+    url: 'http://localhost:3000'
+  },
   'custom browsersync proxy and vitejs port': {
     vite: {
       server: {

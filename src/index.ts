@@ -98,6 +98,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
         return out
       }
 
+      /* c8 ignore start */
       if (viteJSLog) {
         const _print = server.printUrls
 
@@ -130,6 +131,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
           }
         }
       }
+      /* c8 ignore stop */
 
       const _close = server.close
       server.close = async () => {
