@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { Browser, chromium, Page } from 'playwright'
 import {
   it,
@@ -52,6 +52,11 @@ const configProxy: Record<string, TestConfig> = {
   'custom browsersync proxy': {
     vite: {},
     plugin: { bs: { proxy: 'http://localhost:5173' } },
+    url: 'http://localhost:3000'
+  },
+  'custom browsersync proxy object': {
+    vite: {},
+    plugin: { bs: { proxy: { target: 'http://localhost:5173' } } },
     url: 'http://localhost:3000'
   },
   'custom browsersync proxy and vitejs port': {

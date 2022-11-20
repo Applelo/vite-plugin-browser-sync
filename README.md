@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/vite-plugin-browser-sync)](https://www.npmjs.com/package/vite-plugin-browser-sync) [![node-current](https://img.shields.io/node/v/vite-plugin-browser-sync)](https://nodejs.org/)
+[![npm](https://img.shields.io/npm/v/vite-plugin-browser-sync)](https://www.npmjs.com/package/vite-plugin-browser-sync) [![node-current](https://img.shields.io/node/v/vite-plugin-browser-sync)](https://nodejs.org/) [![Coverage Status](https://coveralls.io/repos/github/Applelo/vite-plugin-browser-sync/badge.svg?branch=main)](https://coveralls.io/github/Applelo/vite-plugin-browser-sync?branch=main)
 
 # vite-plugin-browser-sync
 
