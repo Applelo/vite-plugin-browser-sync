@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 import { Browser, chromium, Page } from 'playwright'
+import { version } from 'browser-sync/package.json'
 import {
   it,
   expect,
@@ -86,7 +87,7 @@ describe('proxy option', () => {
       // need to use playwright to test the proxy
       await page.goto(url)
       const script = await page.$(
-        'script[src="/browser-sync/browser-sync-client.js?v=2.27.10"]'
+        `script[src="/browser-sync/browser-sync-client.js?v=${version}"]`
       )
 
       server.close()
@@ -106,7 +107,7 @@ it('snippet option', async () => {
 
   await page.goto('http://127.0.0.1:5173/')
   const script = await page.$(
-    'script[src="http://localhost:3000/browser-sync/browser-sync-client.js?v=2.27.10"]'
+    `script[src="http://localhost:3000/browser-sync/browser-sync-client.js?v=${version}"]`
   )
 
   server.close()
