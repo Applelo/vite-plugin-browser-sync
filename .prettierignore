@@ -2,3 +2,4 @@ node_modules/
 dist/
 LICENSE
 pnpm-lock.yaml
+coverage

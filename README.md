@@ -95,9 +95,9 @@ If you want to change the overrided options you free to do so via the `bs` objec
 
 ### For `proxy` mode
 
-| Option                                                           | Why                                            |
-| ---------------------------------------------------------------- | ---------------------------------------------- |
-| [proxy.target](https://browsersync.io/docs/options#option-proxy) | Inject the right url from ViteJS               |
+| Option                                                           | Why                                           |
+| ---------------------------------------------------------------- | --------------------------------------------- |
+| [proxy.target](https://browsersync.io/docs/options#option-proxy) | Inject the right url from ViteJS              |
 | [proxy.ws](https://browsersync.io/docs/options#option-proxy)     | Force websocket proxy to make work ViteJS HMR |
 
 ### For `snippet` mode
