@@ -34,7 +34,7 @@ pnpm add -D vite-plugin-browser-sync
 
 ## 👨‍💻 Usage
 
-BrowserSync starts alongside your Vite Server. By default, it uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it works !
+BrowserSync starts alongside your Vite Server. By default, it uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it work !
 
 ```js
 // vite.config.js / vite.config.ts
@@ -82,7 +82,7 @@ export default {
 
 ## vite-plugin-browser-sync options for BrowserSync
 
-This plugin overrides default options from BrowserSync to doesn't duplicate behaviors already handle by ViteJS. Futhermore, it syncs with your ViteJS Config.
+This plugin overrides default options from BrowserSync to doesn't duplicate behaviors already handle by ViteJS. Futhermore, your ViteJS config are synced with BrowserSync.
 
 If you want to change the overrided options you free to do so via the `bs` object.
 
@@ -98,7 +98,7 @@ If you want to change the overrided options you free to do so via the `bs` objec
 | Option                                                           | Why                                            |
 | ---------------------------------------------------------------- | ---------------------------------------------- |
 | [proxy.target](https://browsersync.io/docs/options#option-proxy) | Inject the right url from ViteJS               |
-| [proxy.ws](https://browsersync.io/docs/options#option-proxy)     | Forced websocket proxy to make work ViteJS HMR |
+| [proxy.ws](https://browsersync.io/docs/options#option-proxy)     | Force websocket proxy to make work ViteJS HMR |
 
 ### For `snippet` mode
 
