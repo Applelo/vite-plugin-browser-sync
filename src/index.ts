@@ -16,7 +16,7 @@ interface OptionsBS extends browserSync.Options {
 
 export default function VitePluginBrowserSync(options?: Options): Plugin {
   const name = 'vite-plugin-browser-sync'
-  const bsClientVersion = '2.27.10'
+  const bsClientVersion = '2.28.3'
   let bs: browserSync.BrowserSyncInstance
   let config: ResolvedConfig
   let mode: OptionsType = options?.mode || 'proxy'
