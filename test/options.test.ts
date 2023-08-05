@@ -89,7 +89,7 @@ describe('proxy option', () => {
       // need to use playwright to test the proxy
       await page.goto(url)
       const script = page.locator(
-        `script[src^="/browser-sync/browser-sync-client.js?v="]`,
+        'script[src^="/browser-sync/browser-sync-client.js?v="]',
       )
 
       server.close()
@@ -109,7 +109,7 @@ it('snippet option', async () => {
 
   await page.goto('http://127.0.0.1:5173/')
   const script = page.locator(
-    `script[src^="http://localhost:3000/browser-sync/browser-sync-client.js?v="]`,
+    'script[src^="http://localhost:3000/browser-sync/browser-sync-client.js?v="]',
   )
 
   server.close()
