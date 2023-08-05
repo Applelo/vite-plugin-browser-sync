@@ -2,7 +2,7 @@ import './style.css'
 
 const form = document.getElementById('form') as HTMLFormElement | null
 
-form?.addEventListener('submit', e => {
+form?.addEventListener('submit', (e) => {
   e.preventDefault()
   const data = new FormData(form)
 
@@ -11,7 +11,6 @@ form?.addEventListener('submit', e => {
 
   const message = `Hello ${firstname} ${lastname} !`
   const messageEl = document.getElementById('message')
-  if (messageEl) {
+  if (messageEl)
     messageEl.textContent = message
-  }
 })

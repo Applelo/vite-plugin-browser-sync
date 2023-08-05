@@ -46,7 +46,7 @@ jobs:
 
   coverage:
     runs-on: ubuntu-latest
-    name: 'Coverage'
+    name: Coverage
 
     steps:
       - uses: actions/checkout@v3
@@ -107,9 +107,6 @@ jobs:
 
       - name: Lint
         run: pnpm lint
-
-      - name: Check formatting
-        run: pnpm format:check
 
       - name: Typecheck
         run: pnpm typecheck
