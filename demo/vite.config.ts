@@ -1,5 +1,5 @@
 import VitePluginBrowserSync from '../src'
 
 export default {
-  plugins: [VitePluginBrowserSync()]
+  plugins: [VitePluginBrowserSync()],
 }

@@ -1,4 +1,4 @@
-import type { Plugin, HtmlTagDescriptor, ResolvedConfig } from 'vite'
+import type { HtmlTagDescriptor, Plugin, ResolvedConfig } from 'vite'
 import browserSync from 'browser-sync'
 import { bold, lightYellow } from 'kolorist'
 
@@ -9,7 +9,7 @@ export interface Options {
   bs?: browserSync.Options
 }
 
-//"snippet" exists in the doc but not in the type def
+// "snippet" exists in the doc but not in the type def
 interface OptionsBS extends browserSync.Options {
   snippet: boolean
 }
@@ -37,14 +37,12 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
         viteJSLog = true
       }
 
-      if (typeof bsOptions.open === 'undefined') {
+      if (typeof bsOptions.open === 'undefined')
         bsOptions.open = typeof config.server.open !== 'undefined'
-      }
 
       // Handle by vite so we disable it
-      if (typeof bsOptions.codeSync === 'undefined') {
+      if (typeof bsOptions.codeSync === 'undefined')
         bsOptions.codeSync = false
-      }
 
       if (mode === 'snippet') {
         // disable log snippet because it is handle by the plugin
@@ -52,45 +50,46 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
         bsOptions.snippet = false
       }
 
-      if (bsOptions.proxy) {
+      if (bsOptions.proxy)
         mode = 'proxy'
-      }
 
-      bsOptions.online =
-        bsOptions.online === true ||
-        typeof config.server.host !== 'undefined' ||
-        false
+      bsOptions.online
+        = bsOptions.online === true
+        || typeof config.server.host !== 'undefined'
+        || false
 
       const _listen = server.listen
       server.listen = async () => {
         const out = await _listen()
 
         if (mode === 'proxy') {
-          const target =
-            server.resolvedUrls?.local[0] ||
-            `${config.server.https ? 'https' : 'http'}://localhost:${
+          const target
+            = server.resolvedUrls?.local[0]
+            || `${config.server.https ? 'https' : 'http'}://localhost:${
               config.server.port || 5173
             }/`
 
           if (!bsOptions.proxy) {
             bsOptions.proxy = {
               target,
-              ws: true
+              ws: true,
             }
-          } else if (typeof bsOptions.proxy === 'string') {
+          }
+          else if (typeof bsOptions.proxy === 'string') {
             bsOptions.proxy = {
               target: bsOptions.proxy,
-              ws: true
+              ws: true,
             }
-          } else if (
-            typeof bsOptions.proxy === 'object' &&
-            !bsOptions.proxy.ws
+          }
+          else if (
+            typeof bsOptions.proxy === 'object'
+            && !bsOptions.proxy.ws
           ) {
             bsOptions.proxy.ws = true
           }
         }
 
-        await new Promise(resolve => {
+        await new Promise((resolve) => {
           bs.init(bsOptions, () => {
             resolve(true)
           })
@@ -108,23 +107,24 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
           const urls: Record<string, string> = bs.getOption('urls').toJS()
           _print()
 
-          const consoleTexts =
-            mode === 'snippet'
+          const consoleTexts: Record<string, string>
+            = mode === 'snippet'
               ? { ui: 'UI' }
               : {
-                  local: 'Local',
-                  external: 'External',
-                  ui: 'UI',
-                  'ui-external': 'UI External'
+                  'local': 'Local',
+                  'external': 'External',
+                  'ui': 'UI',
+                  'ui-external': 'UI External',
                 }
           for (const key in consoleTexts) {
             if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
               const text = consoleTexts[key]
               if (Object.prototype.hasOwnProperty.call(urls, key)) {
+                // eslint-disable-next-line no-console
                 console.log(
                   `  ${lightYellow('➜')}  ${bold(
-                    'BrowserSync - ' + text
-                  )}: ${colorUrl(urls[key])}`
+                    `BrowserSync - ${text}`,
+                  )}: ${colorUrl(urls[key])}`,
                 )
               }
             }
@@ -143,20 +143,21 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       enforce: 'post',
       transform: (html, ctx) => {
         const server = ctx.server
-        if (mode !== 'snippet' || !bs.active || !server) return html
+        if (mode !== 'snippet' || !bs.active || !server)
+          return html
         const urls: Record<string, string> = bs.getOption('urls').toJS()
 
         const bsScript: HtmlTagDescriptor = {
           tag: 'script',
           attrs: {
             async: '',
-            src: `${urls.local}/browser-sync/browser-sync-client.js?v=${bsClientVersion}`
+            src: `${urls.local}/browser-sync/browser-sync-client.js?v=${bsClientVersion}`,
           },
-          injectTo: 'body'
+          injectTo: 'body',
         }
 
         return [bsScript]
-      }
-    }
+      },
+    },
   }
 }
