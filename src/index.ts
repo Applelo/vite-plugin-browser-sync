@@ -120,8 +120,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
             if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
               const text = consoleTexts[key]
               if (Object.prototype.hasOwnProperty.call(urls, key)) {
-                // eslint-disable-next-line no-console
-                console.log(
+                config.logger.info(
                   `  ${lightYellow('➜')}  ${bold(
                     `BrowserSync - ${text}`,
                   )}: ${colorUrl(urls[key])}`,
