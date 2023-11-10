@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-browser-sync",
-  "version": "1.0.6",
-  "packageManager": "pnpm@8.6.12",
+  "version": "1.0.7",
+  "packageManager": "pnpm@8.10.2",
   "description": "Add BrowserSync in your Vite project",
   "author": "Applelo",
   "license": "GPL-3.0",
@@ -32,7 +32,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=14.18.0"
+    "node": "^14.18.0 || >=16.0.0"
   },
   "scripts": {
     "lint": "eslint .",
@@ -47,18 +47,18 @@
     "vite": "^3.0.0 || ^4.0.0"
   },
   "dependencies": {
-    "@types/browser-sync": "^2.27.0",
+    "@types/browser-sync": "^2.27.4",
     "browser-sync": "^2.29.3",
     "kolorist": "^1.8.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.40.2",
-    "@vitest/coverage-v8": "^0.34.1",
-    "eslint": "^8.46.0",
-    "playwright": "^1.36.2",
+    "@antfu/eslint-config": "^1.1.0",
+    "@vitest/coverage-v8": "^0.34.6",
+    "eslint": "^8.53.0",
+    "playwright": "^1.39.0",
     "tsup": "^7.2.0",
-    "typescript": "^5.1.6",
-    "vite": "^4.4.9",
-    "vitest": "^0.34.1"
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0",
+    "vitest": "^0.34.6"
   }
 }

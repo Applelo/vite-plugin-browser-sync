@@ -21,14 +21,14 @@ let page: Page
 beforeAll(async () => {
   browser = await chromium.launch()
 })
-afterAll(async () => {
-  await browser.close()
-})
 beforeEach(async () => {
   page = await browser.newPage()
 })
 afterEach(async () => {
   await page.close()
+})
+afterAll(async () => {
+  await browser.close()
 })
 
 interface TestConfig {
@@ -84,7 +84,6 @@ describe('proxy option', () => {
         ...vite,
       })
       await server.listen()
-      // server.printUrls()
 
       // need to use playwright to test the proxy
       await page.goto(url)
@@ -107,7 +106,7 @@ it('snippet option', async () => {
   })
   await server.listen()
 
-  await page.goto('http://127.0.0.1:5173/')
+  await page.goto('http://localhost:5173')
   const script = page.locator(
     'script[src^="http://localhost:3000/browser-sync/browser-sync-client.js?v="]',
   )
