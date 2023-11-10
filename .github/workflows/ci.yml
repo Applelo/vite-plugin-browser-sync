@@ -15,16 +15,28 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node_version: [14, 16, 18, 20]
         os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          # Active LTS + other OS
+          - os: macos-latest
+            node_version: 18
+          - os: windows-latest
+            node_version: 18
       fail-fast: false
 
     steps:
       - uses: actions/checkout@v3
 
-      - uses: pnpm/action-setup@v2.2.4
+      - name: Install pnpm (node 14, pnpm 7)
+        if: matrix.node_version == 14
+        uses: pnpm/action-setup@v2.2.4
         with:
           version: 7
+
+      - name: Install pnpm
+        if: matrix.node_version != 14
+        uses: pnpm/action-setup@v2.2.4
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -55,12 +67,12 @@ jobs:
 
       - uses: pnpm/action-setup@v2.2.4
         with:
-          version: 7
+          version: 8
 
-      - name: Set node version to 16
+      - name: Set node version to 20
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
           cache: pnpm
 
       - name: Install
@@ -82,7 +94,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    name: 'Lint: node-16, ubuntu-latest'
+    name: 'Lint: node-20, ubuntu-latest'
 
     steps:
       - uses: actions/checkout@v3
@@ -90,13 +102,11 @@ jobs:
           fetch-depth: 0
 
       - uses: pnpm/action-setup@v2.2.4
-        with:
-          version: 7
 
-      - name: Set node version to 16
+      - name: Set node version to 20
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
           cache: pnpm
 
       - name: Install
