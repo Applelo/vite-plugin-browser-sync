@@ -30,6 +30,9 @@ yarn add -D vite-plugin-browser-sync
 
 # pnpm
 pnpm add -D vite-plugin-browser-sync
+
+# bun
+bun add -D vite-plugin-browser-sync
 ```
 
 ## 👨‍💻 Usage
