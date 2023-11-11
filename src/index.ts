@@ -139,8 +139,8 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       }
     },
     transformIndexHtml: {
-      enforce: 'post',
-      transform: (html, ctx) => {
+      order: 'post',
+      handler: (html, ctx) => {
         const server = ctx.server
         if (mode !== 'snippet' || !bs.active || !server)
           return html
