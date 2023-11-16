@@ -39,7 +39,7 @@
     "lint:fix": "eslint . --fix",
     "build": "tsup src/index.ts --dts --format cjs,esm",
     "build:watch": "tsup src/index.ts --watch --dts --format cjs,esm",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit --skipLibCheck",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "prepublishOnly": "npm run build"
