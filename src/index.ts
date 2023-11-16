@@ -95,7 +95,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
           }
           else if (
             typeof bsOptions.proxy === 'object'
-            && !bsOptions.proxy.ws
+              && !bsOptions.proxy.ws
           ) {
             bsOptions.proxy.ws = true
           }
