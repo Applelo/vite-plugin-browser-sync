@@ -4,7 +4,7 @@ import { bold, lightYellow } from 'kolorist'
 
 type OptionsType = 'snippet' | 'proxy'
 
-// "snippet" exists in the doc but not in the type def
+// "snippet" option exists in the doc but not in the BrowserSync type definition
 // waiting for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/67380 resolution
 interface OptionsBS extends browserSync.Options {
   /**
