@@ -4,14 +4,26 @@ import { bold, lightYellow } from 'kolorist'
 
 type OptionsType = 'snippet' | 'proxy'
 
-export interface Options {
-  mode?: OptionsType
-  bs?: browserSync.Options
+// "snippet" option exists in the doc but not in the BrowserSync type definition
+// waiting for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/67380 resolution
+interface OptionsBS extends browserSync.Options {
+  /**
+   * Set this option to false to prevent Browsersync from injecting the connection snippet
+   */
+  snippet?: boolean
 }
 
-// "snippet" exists in the doc but not in the type def
-interface OptionsBS extends browserSync.Options {
-  snippet: boolean
+export interface Options {
+  /**
+   * proxy (default): Browsersync will wrap your vhost with a proxy URL to view your site.
+   * snippet: Inject Browsersync inside your html page
+   */
+  mode?: OptionsType
+  /**
+   * BrowserSync options
+   * @see  https://browsersync.io/docs/options
+   */
+  bs?: OptionsBS
 }
 
 export default function VitePluginBrowserSync(options?: Options): Plugin {
@@ -83,7 +95,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
           }
           else if (
             typeof bsOptions.proxy === 'object'
-            && !bsOptions.proxy.ws
+              && !bsOptions.proxy.ws
           ) {
             bsOptions.proxy.ws = true
           }
@@ -139,8 +151,8 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       }
     },
     transformIndexHtml: {
-      enforce: 'post',
-      transform: (html, ctx) => {
+      order: 'post',
+      handler: (html, ctx) => {
         const server = ctx.server
         if (mode !== 'snippet' || !bs.active || !server)
           return html
