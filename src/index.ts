@@ -4,15 +4,6 @@ import { bold, lightYellow } from 'kolorist'
 
 type OptionsType = 'snippet' | 'proxy'
 
-// "snippet" option exists in the doc but not in the BrowserSync type definition
-// waiting for https://github.com/DefinitelyTyped/DefinitelyTyped/pull/67380 resolution
-interface OptionsBS extends browserSync.Options {
-  /**
-   * Set this option to false to prevent Browsersync from injecting the connection snippet
-   */
-  snippet?: boolean
-}
-
 export interface Options {
   /**
    * proxy (default): Browsersync will wrap your vhost with a proxy URL to view your site.
@@ -23,7 +14,7 @@ export interface Options {
    * BrowserSync options
    * @see  https://browsersync.io/docs/options
    */
-  bs?: OptionsBS
+  bs?: browserSync.Options
 }
 
 export default function VitePluginBrowserSync(options?: Options): Plugin {
@@ -32,7 +23,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
   let bs: browserSync.BrowserSyncInstance
   let config: ResolvedConfig
   let mode: OptionsType = options?.mode || 'proxy'
-  const bsOptions = (options?.bs as OptionsBS) || {}
+  const bsOptions: browserSync.Options = options?.bs || {}
 
   return {
     name,
