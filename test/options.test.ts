@@ -12,8 +12,8 @@ import {
 } from 'vitest'
 import type { UserConfig } from 'vite'
 import { createServer } from 'vite'
-import type { Options } from '../src'
 import VitePluginBrowserSync from '../src'
+import type { Options } from '../src/types'
 
 let browser: Browser
 let page: Page
