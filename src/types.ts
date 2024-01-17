@@ -1,8 +1,9 @@
-import type browserSync from 'browser-sync'
+import type { Options as BrowserSyncOptions } from 'browser-sync'
 import type { PreviewServer, ViteDevServer } from 'vite'
 
 export type BsMode = 'snippet' | 'proxy'
-
+export type Env = 'build' | 'dev' | 'preview'
+export type BsOptions = Partial<Record<Env, BrowserSyncOptions>>
 export type ViteServer = ViteDevServer | PreviewServer
 
 export interface Options {
@@ -15,20 +16,10 @@ export interface Options {
    * BrowserSync options
    * @see  https://browsersync.io/docs/options
    */
-  bs?: browserSync.Options
+  bs?: BsOptions
   /**
    * Activate BrowserSync on dev
-   * @default true
+   * @default {dev: true}
    */
-  dev?: boolean
-  /**
-   * Activate BrowserSync on build watch
-   * @default false
-   */
-  build?: boolean
-  /**
-   * Activate BrowserSync on preview
-   * @default false
-   */
-  preview?: boolean
+  runOn?: Partial<Record<Env, boolean>>
 }

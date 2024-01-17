@@ -1,12 +1,31 @@
-import type { Options as BsOptions } from 'browser-sync'
+import type { Options as BrowserSyncOptions } from 'browser-sync'
 import type { ResolvedConfig } from 'vite'
-import type { Options, ViteServer } from './types'
+import type { Env, Options, ViteServer } from './types'
 
-export function getOptions(obj: { config: ResolvedConfig, server: ViteServer, options?: Options }) {
-  const { config, options, server } = obj
+const defaultPorts: Record<Env, number | null> = {
+  dev: 5173,
+  preview: 4173,
+  build: null,
+}
+
+export function getOptions(obj: {
+  config: ResolvedConfig
+  server?: ViteServer
+  options?: Options
+  env: Env
+}) {
+  const { config, options, server, env } = obj
   let log = false
   let mode: Options['mode'] = options?.mode || 'proxy'
-  const bsOptions: BsOptions = options?.bs || {}
+
+  let bsOptions: BrowserSyncOptions = {}
+  const bsOptionsEnv = typeof options?.bs !== 'undefined'
+    && env in options.bs
+    ? options.bs[env]
+    : {}
+
+  if (bsOptionsEnv)
+    bsOptions = bsOptionsEnv
 
   if (typeof bsOptions.logLevel === 'undefined') {
     bsOptions.logLevel = 'silent'
@@ -35,10 +54,11 @@ export function getOptions(obj: { config: ResolvedConfig, server: ViteServer, op
     || false
 
   if (mode === 'proxy') {
+    const defaultPort = defaultPorts[env]
     const target
-        = server.resolvedUrls?.local[0]
+        = server?.resolvedUrls?.local[0]
         || `${config.server.https ? 'https' : 'http'}://localhost:${
-          config.server.port || 5173
+          config.server.port || defaultPort
         }/`
 
     if (!bsOptions.proxy) {
@@ -55,7 +75,7 @@ export function getOptions(obj: { config: ResolvedConfig, server: ViteServer, op
     }
     else if (
       typeof bsOptions.proxy === 'object'
-        && !bsOptions.proxy.ws
+      && !bsOptions.proxy.ws
     ) {
       bsOptions.proxy.ws = true
     }

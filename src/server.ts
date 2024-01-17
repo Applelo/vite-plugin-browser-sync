@@ -1,52 +1,37 @@
+import process from 'node:process'
 import { create } from 'browser-sync'
 import type { ResolvedConfig } from 'vite'
-import type { BsMode, Options, ViteServer } from './types'
+import type { BsMode, Env, Options, ViteServer } from './types'
 import { displayLog } from './log'
 import { getOptions } from './options'
 
-export function initBsServer(obj: {
+export async function initBsServer(obj: {
   name: string
-  server: ViteServer
+  server?: ViteServer
   bsMode: BsMode
   options?: Options
   config: ResolvedConfig
+  env: Env
 }) {
   let viteJSLog = false
   let bsMode = obj.bsMode
-  const { name, server, config, options } = obj
+  const { name, server, config, options, env } = obj
   const bs = create(name)
+  const { log, mode, bsOptions } = getOptions({
+    config,
+    server,
+    options,
+    env,
+  })
+  bsMode = mode
+  viteJSLog = log
 
-  const listenCallback = async () => {
-    const { log, mode, bsOptions } = getOptions({
-      config,
-      server,
-      options,
+  await new Promise((resolve) => {
+    bs.init(bsOptions, () => {
+      resolve(true)
     })
-    bsMode = mode
-    viteJSLog = log
+  })
 
-    await new Promise((resolve) => {
-      bs.init(bsOptions, () => {
-        resolve(true)
-      })
-    })
-  }
-
-  if ('listen' in server) {
-    const _listen = server.listen
-    server.listen = async () => {
-      const out = await _listen()
-      await listenCallback()
-      return out
-    }
-  }
-  else {
-    server.httpServer.prependListener('listening', async () => {
-      await listenCallback()
-    })
-  }
-
-  /* c8 ignore start */
   if (viteJSLog) {
     displayLog({
       server,
@@ -55,9 +40,8 @@ export function initBsServer(obj: {
       logger: config.logger,
     })
   }
-  /* c8 ignore stop */
 
-  if ('close' in server) {
+  if (server && 'close' in server) {
     const _close = server.close
     server.close = async () => {
       bs.exit()
@@ -65,8 +49,9 @@ export function initBsServer(obj: {
     }
   }
   else {
-    server.httpServer.prependListener('close', () => {
+    process.on('SIGINT', () => {
       bs.exit()
+      process.exit(0)
     })
   }
 

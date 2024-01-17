@@ -1,5 +1,14 @@
 import VitePluginBrowserSync from 'vite-plugin-browser-sync'
 
 export default {
-  plugins: [VitePluginBrowserSync({ preview: true })],
+  server: {
+    port: 3000,
+  },
+  plugins: [
+    VitePluginBrowserSync({
+      runOn: {
+        preview: false,
+      },
+    }),
+  ],
 }

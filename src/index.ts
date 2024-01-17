@@ -1,6 +1,6 @@
 import type { HtmlTagDescriptor, Plugin, ResolvedConfig } from 'vite'
 import type { BrowserSyncInstance } from 'browser-sync'
-import type { BsMode, Options } from './types'
+import type { BsMode, Env, Options } from './types'
 import { initBsServer } from './server'
 
 export default function VitePluginBrowserSync(options?: Options): Plugin {
@@ -9,6 +9,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
   let bs: BrowserSyncInstance
   let config: ResolvedConfig
   let bsMode: BsMode = 'proxy'
+  let env: Env = 'dev'
 
   return {
     name,
@@ -16,8 +17,10 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
     configResolved(_config) {
       config = _config
     },
-    configureServer(server) {
-      const { bs: browserSync, bsMode: mode } = initBsServer({
+    async configureServer(server) {
+      env = 'dev'
+      const { bs: browserSync, bsMode: mode } = await initBsServer({
+        env,
         name,
         server,
         bsMode,
@@ -27,12 +30,30 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
       bs = browserSync
       bsMode = mode
     },
-    configurePreviewServer(server) {
-      if (!options?.preview)
+    async configurePreviewServer(server) {
+      env = 'preview'
+      if (!options?.runOn?.preview)
         return
-      const { bs: browserSync, bsMode: mode } = initBsServer({
+      const { bs: browserSync, bsMode: mode } = await initBsServer({
+        env,
         name,
         server,
+        bsMode,
+        options,
+        config,
+      })
+      bs = browserSync
+      bsMode = mode
+    },
+    buildStart: async () => {
+      if (!options?.runOn?.build)
+        return
+      if (['preview', 'dev'].includes(env))
+        return
+      env = 'build'
+      const { bs: browserSync, bsMode: mode } = await initBsServer({
+        env,
+        name,
         bsMode,
         options,
         config,
