@@ -56,8 +56,8 @@ const configProxy: Record<string, TestConfig> = {
     vite: {},
     plugin: {
       bs: {
-        dev:{ proxy: 'http://localhost:5173' }
-      }
+        dev: { proxy: 'http://localhost:5173' },
+      },
     },
     url: 'http://localhost:3000',
   },
@@ -66,9 +66,9 @@ const configProxy: Record<string, TestConfig> = {
     plugin: {
       bs: {
         dev: {
-          proxy: { target: 'http://localhost:5173' }
-        }
-      }
+          proxy: { target: 'http://localhost:5173' },
+        },
+      },
     },
     url: 'http://localhost:3000',
   },
@@ -80,9 +80,9 @@ const configProxy: Record<string, TestConfig> = {
     },
     plugin: {
       bs: {
-        dev:{ proxy: 'http://localhost:3000', port: 5174 }
-      }
-     },
+        dev: { proxy: 'http://localhost:3000', port: 5174 },
+      },
+    },
     url: 'http://localhost:5174',
   },
 }
