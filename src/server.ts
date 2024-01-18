@@ -34,7 +34,6 @@ export class Server {
 
     this.bsServer = create(this.name)
 
-    this.registerLog()
     this.registerInit()
     this.registerClose()
   }
@@ -54,6 +53,16 @@ export class Server {
 
   private get logged() {
     return typeof this.userBsOptions.logLevel === 'undefined'
+  }
+
+  private get port() {
+    if (this.env === 'build' || !this.server)
+      return null
+    const defaultPort = defaultPorts[this.env]
+    const configPort = this.env === 'dev'
+      ? this.config.server.port
+      : this.config.preview.port
+    return configPort || defaultPort
   }
 
   private get userBsOptions(): BrowserSyncOptions {
@@ -89,11 +98,10 @@ export class Server {
       || false
 
     if (this.mode === 'proxy') {
-      const defaultPort = defaultPorts[this.env]
       const target
           = this.server?.resolvedUrls?.local[0]
           || `${this.config.server.https ? 'https' : 'http'}://localhost:${
-            this.config.server.port || defaultPort
+            this.port
           }/`
 
       if (!bsOptions.proxy) {
@@ -127,15 +135,13 @@ export class Server {
     })
   }
 
-  private registerLog() {
-    /* c8 ignore start */
-    if (!this.logged)
-      return
+  /* c8 ignore start */
+  private log() {
     const colorUrl = (url: string) =>
       lightYellow(url.replace(/:(\d+)$/, (_, port) => `:${bold(port)}/`))
-    const log = () => {
-      const urls: Record<string, string> = this.bsServer.getOption('urls').toJS()
-      const consoleTexts: Record<string, string>
+
+    const urls: Record<string, string> = this.bsServer.getOption('urls').toJS()
+    const consoleTexts: Record<string, string>
             = this.mode === 'snippet'
               ? { ui: 'UI' }
               : {
@@ -144,34 +150,38 @@ export class Server {
                   'ui': 'UI',
                   'ui-external': 'UI External',
                 }
-      for (const key in consoleTexts) {
-        if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
-          const text = consoleTexts[key]
-          if (Object.prototype.hasOwnProperty.call(urls, key)) {
-            this.config.logger.info(
+    for (const key in consoleTexts) {
+      if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
+        const text = consoleTexts[key]
+        if (Object.prototype.hasOwnProperty.call(urls, key)) {
+          this.config.logger.info(
                   `  ${lightYellow('➜')}  ${bold(
                     `BrowserSync - ${text}`,
                   )}: ${colorUrl(urls[key])}`,
-            )
-          }
+          )
         }
       }
     }
+  }
 
-    if (this.server) {
+  private registerLog() {
+    if (!this.logged)
+      return
+
+    if (this.server && this.env === 'dev') {
       const _print = this.server.printUrls
       this.server.printUrls = () => {
         _print()
-        log()
+        this.log()
       }
     }
     else {
-      log()
+      this.log()
     }
-    /* c8 ignore stop */
   }
+  /* c8 ignore stop */
 
-  private registerInit() {
+  private async registerInit() {
     if (this.server && 'listen' in this.server) {
       const _listen = this.server.listen
       this.server.listen = async () => {
@@ -181,8 +191,9 @@ export class Server {
       }
     }
     else {
-      this.init()
+      await this.init()
     }
+    this.registerLog()
   }
 
   private registerClose() {
