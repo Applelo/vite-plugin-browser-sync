@@ -7,7 +7,7 @@ import type { BsMode, Env, Options, ViteServer } from './types'
 const defaultPorts: Record<Env, number | null> = {
   dev: 5173,
   preview: 4173,
-  build: null,
+  buildWatch: null,
 }
 
 export class Server {
@@ -56,7 +56,7 @@ export class Server {
   }
 
   private get port() {
-    if (this.env === 'build' || !this.server)
+    if (this.env === 'buildWatch' || !this.server)
       return null
     const defaultPort = defaultPorts[this.env]
     const configPort = this.env === 'dev'

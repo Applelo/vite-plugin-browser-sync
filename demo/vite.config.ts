@@ -5,6 +5,8 @@ export default {
     VitePluginBrowserSync({
       runOn: {
         preview: true,
+        buildWatch: true,
+        dev: true,
       },
     }),
   ],

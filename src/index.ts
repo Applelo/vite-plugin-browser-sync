@@ -8,12 +8,36 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
   let config: ResolvedConfig
   let env: Env = 'dev'
   let bsServer: Server | null = null
+  let started = false
 
   return {
     name,
-    apply: 'serve',
+    apply(_config, env) {
+      const applyOnDev = env.command === 'serve' && env.isPreview === false
+        && options?.runOn?.dev !== false
+      const applyOnPreview = env.command === 'serve'
+        && env.isPreview === true
+        && options?.runOn?.preview === true
+      const applyOnBuild = env.command === 'build'
+        && _config.build?.watch !== null
+        && options?.runOn?.buildWatch === true
+
+      return applyOnDev || applyOnPreview || applyOnBuild
+    },
     configResolved(_config) {
       config = _config
+    },
+    buildStart() {
+      if (started)
+        return
+      env = 'buildWatch'
+      bsServer = new Server({
+        env,
+        name,
+        options,
+        config,
+      })
+      started = true
     },
     async configureServer(server) {
       env = 'dev'
@@ -27,8 +51,6 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
     },
     async configurePreviewServer(server) {
       env = 'preview'
-      if (!options?.runOn?.preview)
-        return
       bsServer = new Server({
         env,
         name,
@@ -37,19 +59,6 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
         config,
       })
     },
-    // buildStart: async () => {
-    //   if (!options?.runOn?.build)
-    //     return
-    //   if (['preview', 'dev'].includes(env))
-    //     return
-    //   env = 'build'
-    //   await initBsServer({
-    //     env,
-    //     name,
-    //     options,
-    //     config,
-    //   })
-    // },
     transformIndexHtml: {
       order: 'post',
       handler: (html, ctx) => {

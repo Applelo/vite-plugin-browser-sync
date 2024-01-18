@@ -2,7 +2,7 @@ import type { Options as BrowserSyncOptions } from 'browser-sync'
 import type { PreviewServer, ViteDevServer } from 'vite'
 
 export type BsMode = 'snippet' | 'proxy'
-export type Env = 'build' | 'dev' | 'preview'
+export type Env = 'buildWatch' | 'dev' | 'preview'
 export type BsOptions = Partial<Record<Env, BrowserSyncOptions>>
 export type ViteServer = ViteDevServer | PreviewServer
 
