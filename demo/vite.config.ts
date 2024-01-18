@@ -7,7 +7,7 @@ export default {
   plugins: [
     VitePluginBrowserSync({
       runOn: {
-        preview: false,
+        preview: true,
       },
     }),
   ],

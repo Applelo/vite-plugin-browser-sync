@@ -1,15 +1,13 @@
 import type { HtmlTagDescriptor, Plugin, ResolvedConfig } from 'vite'
-import type { BrowserSyncInstance } from 'browser-sync'
-import type { BsMode, Env, Options } from './types'
-import { initBsServer } from './server'
+import type { Env, Options } from './types'
+import { Server } from './server'
 
 export default function VitePluginBrowserSync(options?: Options): Plugin {
   const name = 'vite-plugin-browser-sync'
   const bsClientVersion = '3.0.2'
-  let bs: BrowserSyncInstance
   let config: ResolvedConfig
-  let bsMode: BsMode = 'proxy'
   let env: Env = 'dev'
+  let bsServer: Server | null = null
 
   return {
     name,
@@ -19,55 +17,46 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
     },
     async configureServer(server) {
       env = 'dev'
-      const { bs: browserSync, bsMode: mode } = await initBsServer({
+      bsServer = new Server({
         env,
         name,
         server,
-        bsMode,
         options,
         config,
       })
-      bs = browserSync
-      bsMode = mode
     },
     async configurePreviewServer(server) {
       env = 'preview'
       if (!options?.runOn?.preview)
         return
-      const { bs: browserSync, bsMode: mode } = await initBsServer({
+      bsServer = new Server({
         env,
         name,
         server,
-        bsMode,
         options,
         config,
       })
-      bs = browserSync
-      bsMode = mode
     },
-    buildStart: async () => {
-      if (!options?.runOn?.build)
-        return
-      if (['preview', 'dev'].includes(env))
-        return
-      env = 'build'
-      const { bs: browserSync, bsMode: mode } = await initBsServer({
-        env,
-        name,
-        bsMode,
-        options,
-        config,
-      })
-      bs = browserSync
-      bsMode = mode
-    },
+    // buildStart: async () => {
+    //   if (!options?.runOn?.build)
+    //     return
+    //   if (['preview', 'dev'].includes(env))
+    //     return
+    //   env = 'build'
+    //   await initBsServer({
+    //     env,
+    //     name,
+    //     options,
+    //     config,
+    //   })
+    // },
     transformIndexHtml: {
       order: 'post',
       handler: (html, ctx) => {
         const server = ctx.server
-        if (bsMode !== 'snippet' || !bs.active || !server)
+        if (!bsServer || bsServer.mode !== 'snippet' || !bsServer.bs.active || !server)
           return html
-        const urls: Record<string, string> = bs.getOption('urls').toJS()
+        const urls: Record<string, string> = bsServer.bs.getOption('urls').toJS()
 
         const bsScript: HtmlTagDescriptor = {
           tag: 'script',
