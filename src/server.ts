@@ -2,7 +2,7 @@ import type { BrowserSyncInstance, Options as BrowserSyncOptions } from 'browser
 import { create } from 'browser-sync'
 import type { ResolvedConfig } from 'vite'
 import { bold, lightYellow } from 'kolorist'
-import type { Env, Options, ViteServer } from './types'
+import type { BsMode, Env, Options, ViteServer } from './types'
 
 const defaultPorts: Record<Env, number | null> = {
   dev: 5173,
@@ -40,7 +40,7 @@ export class Server {
   }
 
   public get mode() {
-    let mode: Options['mode'] = this.options?.mode || 'proxy'
+    let mode: BsMode = this.options?.mode || 'proxy'
 
     if (this.userBsOptions.proxy)
       mode = 'proxy'
@@ -128,6 +128,7 @@ export class Server {
   }
 
   private registerLog() {
+    /* c8 ignore start */
     if (!this.logged)
       return
     const colorUrl = (url: string) =>
@@ -167,7 +168,7 @@ export class Server {
     else {
       log()
     }
-  /* c8 ignore stop */
+    /* c8 ignore stop */
   }
 
   private registerInit() {
