@@ -38,8 +38,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "build": "tsup src/index.ts --dts --format cjs,esm",
-    "build:watch": "tsup src/index.ts --watch --dts --format cjs,esm",
+    "build": "tsup src/index.ts",
+    "build:watch": "tsup src/index.ts --watch",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "test": "vitest",
     "coverage": "vitest run --coverage",
