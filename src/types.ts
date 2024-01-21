@@ -2,24 +2,55 @@ import type { Options as BrowserSyncOptions } from 'browser-sync'
 import type { PreviewServer, ViteDevServer } from 'vite'
 
 export type BsMode = 'snippet' | 'proxy'
-export type Env = 'buildWatch' | 'dev' | 'preview'
-export type BsOptions = Partial<Record<Env, BrowserSyncOptions>>
+export type BsOptions = BrowserSyncOptions
 export type ViteServer = ViteDevServer | PreviewServer
 
-export interface Options {
+interface PartOptions {
   /**
-   * proxy (default): Browsersync will wrap your vhost with a proxy URL to view your site.
-   * snippet: Inject Browsersync inside your html page
+   * Activate BrowserSync
+   * @default false
    */
-  mode?: BsMode
+  enable?: boolean
   /**
    * BrowserSync options
    * @see  https://browsersync.io/docs/options
    */
   bs?: BsOptions
-  /**
-   * Activate BrowserSync on dev
-   * @default {dev: true}
-   */
-  runOn?: Partial<Record<Env, boolean>>
 }
+
+interface PartOptionsMode {
+  /**
+   * proxy (default): Browsersync will wrap your vhost with a proxy URL to view your site.
+   * snippet: Inject Browsersync inside your html page
+   */
+  mode?: BsMode
+}
+
+interface OptionsBuildWatchOptional extends PartOptions {
+  enable: false | undefined
+}
+
+interface OptionsBuildWatchRequired extends PartOptions, PartOptionsMode {
+  enable: true
+  bs: BsOptions
+}
+
+export type OptionsBuildWatch = OptionsBuildWatchOptional | OptionsBuildWatchRequired
+
+export interface OptionsDev extends PartOptions, PartOptionsMode {
+  /**
+   * Activate BrowserSync
+   * @default true
+   */
+  enable?: boolean
+}
+
+export interface OptionsPreview extends PartOptions {}
+
+export interface Options {
+  dev?: OptionsDev
+  buildWatch?: OptionsBuildWatch
+  preview?: OptionsPreview
+}
+
+export type Env = keyof Options

@@ -19,6 +19,7 @@ Add [BrowserSync](https://browsersync.io) in your Vite project.
 - ✨ All the [BrowserSync features](https://browsersync.io/)
 - 🙌 Support for BrowserSync `proxy` and `snippet` mode
 - 🔥 Liberty to manage BrowserSync options
+- 🎛️ Can run on `dev`, `preview` or `build --watch`
 
 ## 📦 Install
 
@@ -37,7 +38,7 @@ bun add -D vite-plugin-browser-sync
 
 ## 👨‍💻 Usage
 
-BrowserSync starts alongside your Vite Server. By default, it uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it work !
+By default, BrowserSync will start alongside your Vite Server in `dev`. It uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it works!
 
 ```js
 // vite.config.js / vite.config.ts
@@ -58,10 +59,12 @@ export default {
   plugins: [
     VitePluginBrowserSync({
       bs: {
-        ui: {
-          port: 8080
-        },
-        notify: false
+        dev: {
+          ui: {
+            port: 8080
+          },
+          notify: false
+        }
       }
     })
   ]
@@ -112,4 +115,4 @@ If you want to change the overrided options you free to do so via the `bs` objec
 
 ## 👨‍💼 Licence
 
-GPL-3.0
+MIT

@@ -1,4 +1,5 @@
 import type { HtmlTagDescriptor, Plugin, ResolvedConfig } from 'vite'
+import { red } from 'kolorist'
 import type { Env, Options } from './types'
 import { Server } from './server'
 
@@ -9,26 +10,48 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
   let env: Env = 'dev'
   let bsServer: Server | null = null
   let started = false
+  let applyOnDev = false
+  let applyOnPreview = false
+  let applyOnBuildWatch = false
 
   return {
     name,
     apply(_config, env) {
-      const applyOnDev = env.command === 'serve' && env.isPreview === false
-        && options?.runOn?.dev !== false
-      const applyOnPreview = env.command === 'serve'
-        && env.isPreview === true
-        && options?.runOn?.preview === true
-      const applyOnBuild = env.command === 'build'
-        && _config.build?.watch !== null
-        && options?.runOn?.buildWatch === true
+      applyOnDev = env.command === 'serve' && env.isPreview === false
+      && options?.dev?.enable !== false
+      applyOnPreview = env.command === 'serve'
+      && env.isPreview === true
+      && options?.preview?.enable === true
+      applyOnBuildWatch = env.command === 'build'
+      && _config.build?.watch !== null
+      && options?.buildWatch?.enable === true
 
-      return applyOnDev || applyOnPreview || applyOnBuild
+      if (
+        applyOnBuildWatch
+        && (
+          typeof options?.buildWatch?.bs?.proxy !== 'string'
+          || typeof options.buildWatch?.bs.proxy !== 'object'
+          || (
+            typeof options.buildWatch?.bs.proxy === 'object'
+            && 'target' in options.buildWatch?.bs.proxy
+          )
+        )
+      ) {
+        console.error(
+          red(
+            '[vite-plugin-browser-sync] You need to set a browsersync target.',
+          ),
+        )
+        return false
+      }
+
+      return applyOnDev || applyOnPreview || applyOnBuildWatch
     },
     configResolved(_config) {
       config = _config
     },
     buildStart() {
-      if (started)
+      if (started || !applyOnBuildWatch)
         return
       env = 'buildWatch'
       bsServer = new Server({
@@ -61,9 +84,8 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
     },
     transformIndexHtml: {
       order: 'post',
-      handler: (html, ctx) => {
-        const server = ctx.server
-        if (!bsServer || bsServer.mode !== 'snippet' || !bsServer.bs.active || !server)
+      handler: (html) => {
+        if (!bsServer || bsServer.mode !== 'snippet' || !bsServer.bs.active)
           return html
         const urls: Record<string, string> = bsServer.bs.getOption('urls').toJS()
 

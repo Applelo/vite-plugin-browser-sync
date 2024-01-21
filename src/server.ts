@@ -2,7 +2,7 @@ import type { BrowserSyncInstance, Options as BrowserSyncOptions } from 'browser
 import { create } from 'browser-sync'
 import type { ResolvedConfig } from 'vite'
 import { bold, lightYellow } from 'kolorist'
-import type { BsMode, Env, Options, ViteServer } from './types'
+import type { BsMode, Env, Options, OptionsBuildWatch, OptionsDev, OptionsPreview, ViteServer } from './types'
 
 const defaultPorts: Record<Env, number | null> = {
   dev: 5173,
@@ -39,7 +39,13 @@ export class Server {
   }
 
   public get mode() {
-    let mode: BsMode = this.options?.mode || 'proxy'
+    if (this.env === 'preview')
+      return 'proxy'
+    let mode: BsMode = this.userOptions
+      && 'mode' in this.userOptions
+      && this.userOptions.mode
+      ? this.userOptions.mode
+      : 'proxy'
 
     if (this.userBsOptions.proxy)
       mode = 'proxy'
@@ -65,12 +71,14 @@ export class Server {
     return configPort || defaultPort
   }
 
-  private get userBsOptions(): BrowserSyncOptions {
-    const bsOptionsEnv = typeof this.options?.bs !== 'undefined'
-      && this.env in this.options.bs
-      ? this.options.bs[this.env]
+  private get userOptions(): OptionsPreview | OptionsBuildWatch | OptionsDev | undefined {
+    return this.options && this.env in this.options
+      ? this.options[this.env]
       : {}
-    return bsOptionsEnv || {}
+  }
+
+  private get userBsOptions(): BrowserSyncOptions {
+    return this.userOptions && this.userOptions.bs ? this.userOptions.bs : {}
   }
 
   private get bsOptions() {

@@ -55,8 +55,10 @@ const configProxy: Record<string, TestConfig> = {
   'custom browsersync proxy': {
     vite: {},
     plugin: {
-      bs: {
-        dev: { proxy: 'http://localhost:5173' },
+      dev: {
+        bs: {
+          proxy: 'http://localhost:5173',
+        },
       },
     },
     url: 'http://localhost:3000',
@@ -64,8 +66,8 @@ const configProxy: Record<string, TestConfig> = {
   'custom browsersync proxy object': {
     vite: {},
     plugin: {
-      bs: {
-        dev: {
+      dev: {
+        bs: {
           proxy: { target: 'http://localhost:5173' },
         },
       },
@@ -79,8 +81,11 @@ const configProxy: Record<string, TestConfig> = {
       },
     },
     plugin: {
-      bs: {
-        dev: { proxy: 'http://localhost:3000', port: 5174 },
+      dev: {
+        bs: {
+          proxy: 'http://localhost:3000',
+          port: 5174,
+        },
       },
     },
     url: 'http://localhost:5174',
@@ -116,7 +121,7 @@ it('snippet option', async () => {
     // any valid user config options, plus `mode` and `configFile`
     configFile: false,
     root: resolve(__dirname, './../demo'),
-    plugins: [VitePluginBrowserSync({ mode: 'snippet' })],
+    plugins: [VitePluginBrowserSync({ dev: { mode: 'snippet' } })],
   })
   await server.listen()
 
