@@ -26,16 +26,13 @@ interface PartOptionsMode {
   mode?: BsMode
 }
 
-interface OptionsBuildWatchOptional extends PartOptions {
-  enable: false | undefined
+export interface OptionsBuildWatch extends PartOptions, PartOptionsMode {
+  /**
+   * Activate BrowserSync
+   * @default true
+   */
+  enable?: boolean
 }
-
-interface OptionsBuildWatchRequired extends PartOptions, PartOptionsMode {
-  enable: true
-  bs: BsOptions
-}
-
-export type OptionsBuildWatch = OptionsBuildWatchOptional | OptionsBuildWatchRequired
 
 export interface OptionsDev extends PartOptions, PartOptionsMode {
   /**

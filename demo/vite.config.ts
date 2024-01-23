@@ -6,6 +6,13 @@ export default {
   },
   plugins: [
     VitePluginBrowserSync({
+      preview: {
+        enable: true,
+      },
+      // buildWatch: {
+      //   enable: true,
+      //   mode: 'snippet',
+      // },
       // buildWatch: {
       //   enable: false,
       // },

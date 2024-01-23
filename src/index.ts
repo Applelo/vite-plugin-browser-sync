@@ -38,6 +38,7 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
 
       if (
         applyOnBuildWatch
+        && options?.buildWatch?.mode !== 'snippet'
         && (
           typeof options?.buildWatch?.bs?.proxy !== 'string'
           || typeof options.buildWatch?.bs.proxy !== 'object'
