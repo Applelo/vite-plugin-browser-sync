@@ -57,4 +57,4 @@ export interface Options {
   bs?: BsOptions
 }
 
-export type Env = keyof Options
+export type Env = 'dev' | 'buildWatch' | 'preview'
