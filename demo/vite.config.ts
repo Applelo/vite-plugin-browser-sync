@@ -6,9 +6,9 @@ export default {
   },
   plugins: [
     VitePluginBrowserSync({
-      buildWatch: {
-        enable: false,
-      },
+      // buildWatch: {
+      //   enable: false,
+      // },
     }),
   ],
 }

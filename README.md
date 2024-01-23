@@ -58,8 +58,8 @@ import VitePluginBrowserSync from 'vite-plugin-browser-sync'
 export default {
   plugins: [
     VitePluginBrowserSync({
-      bs: {
-        dev: {
+      dev: {
+        bs: {
           ui: {
             port: 8080
           },
@@ -80,7 +80,41 @@ import VitePluginBrowserSync from 'vite-plugin-browser-sync'
 export default {
   plugins: [
     VitePluginBrowserSync({
-      mode: 'snippet'
+      dev: {
+        mode: 'snippet'
+      }
+    })
+  ]
+}
+```
+
+You can also enable the plugin on `vite build --watch` mode and `vite preview` mode.
+
+> [!IMPORTANT]
+> In `buildWatch`, if you use the default `proxy` mode you need to set the `bs` object.
+
+> [!IMPORTANT]
+> In `preview`, only the `proxy` mode is supported since it will not inject the `snippet`.
+
+```js
+// vite.config.js / vite.config.ts
+import VitePluginBrowserSync from 'vite-plugin-browser-sync'
+
+export default {
+  plugins: [
+    VitePluginBrowserSync({
+      dev: {
+        enable: false,
+      },
+      preview: {
+        enable: true,
+      },
+      buildWatch: {
+        enable: true,
+        bs: {
+          proxy: 'http://localhost:3000',
+        }
+      }
     })
   ]
 }

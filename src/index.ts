@@ -1,5 +1,5 @@
 import type { HtmlTagDescriptor, Plugin, ResolvedConfig } from 'vite'
-import { red } from 'kolorist'
+import { italic, red } from 'kolorist'
 import type { Env, Options } from './types'
 import { Server } from './server'
 
@@ -18,6 +18,15 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
   return {
     name,
     apply(_config, env) {
+      if (options?.bs) {
+        console.error(
+          red(
+            `[vite-plugin-browser-sync] Since 3.0, you should wrap your ${italic('bs')} option inside a ${italic('dev')} object.`,
+          ),
+        )
+        return false
+      }
+
       applyOnDev = env.command === 'serve' && env.isPreview === false
       && options?.dev?.enable !== false
       applyOnPreview = env.command === 'serve'

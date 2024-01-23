@@ -51,6 +51,10 @@ export interface Options {
   dev?: OptionsDev
   buildWatch?: OptionsBuildWatch
   preview?: OptionsPreview
+  /**
+   * @deprecated since version 3.0
+   */
+  bs?: BsOptions
 }
 
 export type Env = keyof Options
