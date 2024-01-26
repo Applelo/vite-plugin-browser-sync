@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type { BrowserSyncInstance, Options as BrowserSyncOptions } from 'browser-sync'
 import { create } from 'browser-sync'
 import type { ResolvedConfig } from 'vite'
@@ -198,6 +199,14 @@ export class Server {
         return out
       }
     }
+    else if (this.server) {
+      await new Promise((resolve) => {
+        this.server?.httpServer?.once('listening', () => {
+          resolve(true)
+        })
+      })
+      await this.init()
+    }
     else {
       await this.init()
     }
@@ -212,5 +221,14 @@ export class Server {
         await _close()
       }
     }
+    else if (this.server) {
+      this.server?.httpServer?.on('close', () => {
+        this.bsServer.exit()
+      })
+    }
+
+    process.once('SIGINT', () => {
+      this.bsServer.exit()
+    })
   }
 }

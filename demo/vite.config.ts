@@ -1,7 +1,7 @@
 import VitePluginBrowserSync from 'vite-plugin-browser-sync'
 
 export default {
-  server: {
+  preview: {
     port: 3000,
   },
   plugins: [

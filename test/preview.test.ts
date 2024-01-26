@@ -115,6 +115,7 @@ describe.todo('proxy option', () => {
       previewServer.printUrls()
 
       // need to use playwright to test the proxy
+      await page.waitForTimeout(100)
       await page.goto(url)
       const script = page.locator(
         'script[src^="/browser-sync/browser-sync-client.js?v="]',
