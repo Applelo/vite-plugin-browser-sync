@@ -11,6 +11,7 @@ import {
   vi,
 } from 'vitest'
 import { build, createServer } from 'vite'
+import { italic, red } from 'kolorist'
 import VitePluginBrowserSync from '../src'
 
 let browser: Browser
@@ -41,7 +42,9 @@ it('deprecation', async () => {
   })
   await server.listen()
   expect(consoleMock).toHaveBeenCalledOnce()
-  expect(consoleMock).toHaveBeenCalledWith('[vite-plugin-browser-sync] Since 3.0, you should wrap your bs option inside a dev object.')
+  expect(consoleMock).toHaveBeenCalledWith(red(
+    `[vite-plugin-browser-sync] Since 3.0, you should wrap your ${italic('bs')} option inside a ${italic('dev')} object.`,
+  ))
   server.close()
 })
 
@@ -61,5 +64,7 @@ it('build --watch bs object', async () => {
   })
 
   expect(consoleMock).toHaveBeenCalledOnce()
-  expect(consoleMock).toHaveBeenCalledWith('[vite-plugin-browser-sync] You need to set a browsersync target.')
+  expect(consoleMock).toHaveBeenCalledWith(red(
+    '[vite-plugin-browser-sync] You need to set a browsersync target.',
+  ))
 })
