@@ -29,11 +29,14 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
 
       applyOnDev = env.command === 'serve' && env.isPreview === false
       && options?.dev?.enable !== false
+
       applyOnPreview = env.command === 'serve'
       && env.isPreview === true
       && options?.preview?.enable === true
+
       applyOnBuildWatch = env.command === 'build'
-      && _config.build?.watch !== null
+      // @ts-expect-error true exist on config object with CLI
+      && (_config.build?.watch === true || typeof _config.build?.watch === 'object')
       && options?.buildWatch?.enable === true
 
       if (
@@ -96,7 +99,8 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
     transformIndexHtml: {
       order: 'post',
       handler: (html) => {
-        if (!bsServer || bsServer.mode !== 'snippet' || !bsServer.bs.active)
+        const applySnippet = applyOnDev || applyOnBuildWatch
+        if (!bsServer || bsServer.mode !== 'snippet' || !applySnippet)
           return html
         const urls: Record<string, string> = bsServer.bs.getOption('urls').toJS()
 
