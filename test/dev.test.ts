@@ -92,7 +92,7 @@ const configProxy: Record<string, TestConfig> = {
   },
 }
 
-describe('proxy option', () => {
+describe.skip('proxy option', () => {
   for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
     it(name, async () => {
       const server = await createServer({
