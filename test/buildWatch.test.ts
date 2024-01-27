@@ -11,6 +11,7 @@ it('snippet option', async () => {
     configFile: false,
     root: resolve(__dirname, './../demo'),
     build: {
+      emptyOutDir: true,
       outDir: resolve(__dirname, './dist/buildWatch_snippet'),
     },
     plugins: [VitePluginBrowserSync({

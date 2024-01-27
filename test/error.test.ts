@@ -54,6 +54,7 @@ it('build --watch bs object', async () => {
     root: resolve(__dirname, './../demo'),
     build: {
       outDir: resolve(__dirname, './dist/error_build_watch'),
+      emptyOutDir: true,
       watch: {},
     },
     plugins: [VitePluginBrowserSync({
