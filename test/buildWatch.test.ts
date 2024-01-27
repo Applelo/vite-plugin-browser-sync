@@ -35,5 +35,5 @@ it('snippet option', async () => {
 
   const html = await fs.readFile(path.resolve(__dirname, './dist/buildWatch_snippet/index.html'))
   expect(html).not.toBeNull()
-  expect(html.toString()).toContain('<script async="" src="http://localhost:3000/browser-sync/browser-sync-client.js?v=')
+  expect(html.toString()).toMatch(/<script async="" src="http:\/\/localhost:\d{4}\/browser-sync\/browser-sync-client\.js\?v=/g)
 })

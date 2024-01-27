@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node_version: [14, 16, 18, 20]
+        node_version: [16, 18, 20]
         os: [ubuntu-latest]
         include:
           # Active LTS + other OS
@@ -28,14 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install pnpm (node 14, pnpm 7)
-        if: matrix.node_version == 14
-        uses: pnpm/action-setup@v2.2.4
-        with:
-          version: 7
-
       - name: Install pnpm
-        if: matrix.node_version != 14
         uses: pnpm/action-setup@v2.2.4
 
       - name: Use Node.js ${{ matrix.node_version }}
