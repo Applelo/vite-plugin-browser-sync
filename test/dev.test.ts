@@ -92,7 +92,7 @@ const configProxy: Record<string, TestConfig> = {
   },
 }
 
-describe.skip('proxy option', () => {
+describe('proxy option', () => {
   for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
     it(name, async () => {
       const server = await createServer({
@@ -117,7 +117,7 @@ describe.skip('proxy option', () => {
   }
 })
 
-it('snippet option', async () => {
+it.skip('snippet option', async () => {
   const server = await createServer({
     // any valid user config options, plus `mode` and `configFile`
     configFile: false,
