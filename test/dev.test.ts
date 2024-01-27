@@ -104,6 +104,7 @@ describe('proxy option', () => {
       })
       await server.listen()
 
+      await page.waitForTimeout(100)
       // need to use playwright to test the proxy
       await page.goto(url)
       const script = page.locator(
