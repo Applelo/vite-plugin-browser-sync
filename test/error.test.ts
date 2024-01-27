@@ -45,7 +45,7 @@ it('deprecation', async () => {
   expect(consoleMock).toHaveBeenCalledWith(red(
     `[vite-plugin-browser-sync] Since 3.0, you should wrap your ${italic('bs')} option inside a ${italic('dev')} object.`,
   ))
-  server.close()
+  await server.close()
 })
 
 it('build --watch bs object', async () => {

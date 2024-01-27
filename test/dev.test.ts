@@ -111,7 +111,7 @@ describe.skip('proxy option', () => {
         'script[src^="/browser-sync/browser-sync-client.js?v="]',
       )
 
-      server.close()
+      await server.close()
       expect(script).not.toBeNull()
     })
   }
@@ -131,6 +131,6 @@ it('snippet option', async () => {
     'script[src^="http://localhost:3000/browser-sync/browser-sync-client.js?v="]',
   )
 
-  server.close()
+  await server.close()
   expect(script).not.toBeNull()
 })
