@@ -56,6 +56,13 @@ jobs:
       - name: Test
         run: pnpm test
 
+      - name: Upload artifacts on failure
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: test-project-${{ matrix.os }}-${{ matrix.node-version }}
+          path: test/dist/
+
   coverage:
     runs-on: ubuntu-latest
     name: Coverage
