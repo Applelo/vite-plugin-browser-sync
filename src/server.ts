@@ -229,6 +229,7 @@ export class Server {
 
     process.once('SIGINT', () => {
       this.bsServer.exit()
+      process.exit()
     })
   }
 }
