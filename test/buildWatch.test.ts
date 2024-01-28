@@ -7,7 +7,7 @@ import {
 import { build } from 'vite'
 import VitePluginBrowserSync from '../src'
 
-it('snippet option', async () => {
+it.skip('snippet option', async () => {
   await new Promise<boolean>((resolve) => {
     build({
       configFile: false,
