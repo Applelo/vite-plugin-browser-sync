@@ -86,7 +86,7 @@ const configProxy: Record<string, TestConfig> = {
   },
   'custom browsersync proxy and vitejs port': {
     vite: {
-      server: {
+      preview: {
         port: 3000,
       },
     },
@@ -116,7 +116,7 @@ describe('proxy option', () => {
       })
 
       previewServer.printUrls()
-      await page.waitForTimeout(1000)
+      await page.waitForTimeout(100)
 
       await page.goto(url)
       const script = page.locator(
