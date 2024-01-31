@@ -36,6 +36,9 @@ export class Server {
 
     this.bsServer = create(this.name)
 
+    if (typeof this.userBsOptions.logLevel === 'undefined')
+      this.logged = true
+
     this.registerInit()
     this.registerClose()
   }
@@ -82,10 +85,8 @@ export class Server {
   private get bsOptions() {
     const bsOptions = this.userBsOptions
 
-    if (typeof bsOptions.logLevel === 'undefined') {
+    if (typeof bsOptions.logLevel === 'undefined')
       bsOptions.logLevel = 'silent'
-      this.logged = true
-    }
 
     if (typeof bsOptions.open === 'undefined')
       bsOptions.open = typeof this.config.server.open !== 'undefined'
