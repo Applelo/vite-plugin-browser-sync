@@ -150,23 +150,21 @@ export class Server {
       lightYellow(url.replace(/:(\d+)$/, (_, port) => `:${bold(port)}/`))
 
     const urls: Record<string, string> = this.bsServer.getOption('urls').toJS()
-    const consoleTexts: Record<string, string>
-            = this.mode === 'snippet'
-              ? { ui: 'UI' }
-              : {
-                  'local': 'Local',
-                  'external': 'External',
-                  'ui': 'UI',
-                  'ui-external': 'UI External',
-                }
+    const consoleTexts: Record<string, string> = {
+      'local': 'Local',
+      'external': 'External',
+      'ui': 'UI',
+      'ui-external': 'UI External',
+      'tunnel': 'Tunnel',
+    }
     for (const key in consoleTexts) {
       if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
         const text = consoleTexts[key]
         if (Object.prototype.hasOwnProperty.call(urls, key)) {
           this.config.logger.info(
-                  `  ${lightYellow('➜')}  ${bold(
-                    `BrowserSync - ${text}`,
-                  )}: ${colorUrl(urls[key])}`,
+            `  ${lightYellow('➜')}  ${bold(
+              `BrowserSync - ${text}`,
+            )}: ${colorUrl(urls[key])}`,
           )
         }
       }

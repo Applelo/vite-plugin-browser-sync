@@ -12,9 +12,13 @@ export default {
       //     proxy: 'http://localhost:3000',
       //   },
       // },
-      // buildWatch: {
-      //   enable: false,
-      // },
+      buildWatch: {
+        enable: true,
+        mode: 'snippet',
+        bs: {
+          server: 'dist',
+        },
+      },
     }),
   ],
 }

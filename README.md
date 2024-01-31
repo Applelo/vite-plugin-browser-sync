@@ -91,7 +91,8 @@ export default {
 You can also enable the plugin on `vite build --watch` mode and `vite preview` mode.
 
 > [!IMPORTANT]
-> - In `buildWatch`, if you use the default `proxy` mode you need to set the `bs` object. > - `snippet` mode is available in `buildWatch` but it is not recommanded to use since it update your `index.html` file.
+> - In `buildWatch`, if you use the default `proxy` mode you need to set the `bs` object.
+> - `snippet` mode is available in `buildWatch` but it is not recommanded to use since it update your `index.html` file.
 > - In `preview`, only the `proxy` mode is supported since it will not inject the `snippet`.
 
 ```js
