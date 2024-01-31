@@ -4,18 +4,21 @@ export default {
   build: {
     watch: {},
   },
-  preview: {
-    port: 3000,
-  },
+  // preview: {
+  //   port: 3000,
+  // },
   plugins: [
     VitePluginBrowserSync({
-      // preview: {
-      //   enable: true,
-      // },
-      buildWatch: {
+      preview: {
         enable: true,
-        mode: 'snippet',
+        // bs: {
+        //   proxy: 'http://localhost:3000',
+        // },
       },
+      // buildWatch: {
+      //   enable: true,
+      //   mode: 'snippet',
+      // },
       // buildWatch: {
       //   enable: false,
       // },

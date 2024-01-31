@@ -66,7 +66,7 @@ const configProxy: Record<string, TestConfig> = {
       preview: {
         enable: true,
         bs: {
-          proxy: 'http://localhost:5173',
+          proxy: 'http://localhost:4173',
         },
       },
     },
@@ -103,26 +103,34 @@ const configProxy: Record<string, TestConfig> = {
   },
 }
 
-describe.todo('proxy option', () => {
+describe('proxy option', () => {
   for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
     it(name, async () => {
       const previewServer = await preview({
         configFile: false,
         root: resolve(__dirname, './../demo'),
-        plugins: [VitePluginBrowserSync(plugin)],
+        plugins: [
+          VitePluginBrowserSync(plugin),
+        ],
         ...vite,
       })
-      previewServer.printUrls()
 
-      // need to use playwright to test the proxy
+      previewServer.printUrls()
       await page.waitForTimeout(100)
+
       await page.goto(url)
       const script = page.locator(
         'script[src^="/browser-sync/browser-sync-client.js?v="]',
       )
+      const closePromise = new Promise(
+        resolve => previewServer.httpServer.on('close', () => {
+          resolve(true)
+        }),
+      )
 
       expect(script).not.toBeNull()
       previewServer.httpServer.close()
+      await closePromise
     })
   }
 })

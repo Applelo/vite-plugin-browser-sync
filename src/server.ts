@@ -18,6 +18,7 @@ export class Server {
   private config: ResolvedConfig
   private env: Env
   private bsServer: BrowserSyncInstance
+  private logged: boolean = false
 
   constructor(obj: {
     name: string
@@ -58,10 +59,6 @@ export class Server {
     return this.bsServer
   }
 
-  private get logged() {
-    return typeof this.userBsOptions.logLevel === 'undefined'
-  }
-
   private get port() {
     if (this.env === 'buildWatch' || !this.server)
       return null
@@ -85,8 +82,10 @@ export class Server {
   private get bsOptions() {
     const bsOptions = this.userBsOptions
 
-    if (typeof bsOptions.logLevel === 'undefined')
+    if (typeof bsOptions.logLevel === 'undefined') {
       bsOptions.logLevel = 'silent'
+      this.logged = true
+    }
 
     if (typeof bsOptions.open === 'undefined')
       bsOptions.open = typeof this.config.server.open !== 'undefined'
