@@ -116,7 +116,7 @@ describe('proxy option', () => {
       })
 
       previewServer.printUrls()
-      await page.waitForTimeout(100)
+      await page.waitForTimeout(1000)
 
       await page.goto(url)
       const script = page.locator(
