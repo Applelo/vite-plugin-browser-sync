@@ -2,7 +2,7 @@ import process from 'node:process'
 import type { BrowserSyncInstance, Options as BrowserSyncOptions } from 'browser-sync'
 import { create } from 'browser-sync'
 import type { ResolvedConfig } from 'vite'
-import { bold, lightYellow } from 'kolorist'
+import { bold, lightYellow, red } from 'kolorist'
 import type { BsMode, Env, Options, OptionsBuildWatch, OptionsDev, OptionsPreview, ViteServer } from './types'
 
 const defaultPorts: Record<Env, number | null> = {
@@ -107,11 +107,15 @@ export class Server {
       || false
 
     if (this.mode === 'proxy') {
-      const target
-          = this.server?.resolvedUrls?.local[0]
-          || `${this.config.server.https ? 'https' : 'http'}://localhost:${
-            this.port
-          }/`
+      let target
+
+      if (this.server?.resolvedUrls?.local[0]) {
+        target = this.server?.resolvedUrls?.local[0]
+      }
+      else if (this.port) {
+        const protocol = this.config.server.https ? 'https' : 'http'
+        target = `${protocol}://localhost:${this.port}/`
+      }
 
       if (!bsOptions.proxy) {
         bsOptions.proxy = {
@@ -137,9 +141,16 @@ export class Server {
   }
 
   private init() {
-    return new Promise<boolean>((resolve) => {
-      this.bsServer.init(this.bsOptions, () => {
-        resolve(true)
+    return new Promise<BrowserSyncInstance>((resolve, reject) => {
+      this.bsServer.init(this.bsOptions, (error, bs) => {
+        if (error) {
+          this.config.logger.error(
+            red(`[vite-plugin-browser-sync] ${error.name} ${error.message}`),
+            { error },
+          )
+          reject(error)
+        }
+        resolve(bs)
       })
     })
   }

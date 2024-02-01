@@ -1,6 +1,7 @@
 import VitePluginBrowserSync from 'vite-plugin-browser-sync'
+import { defineConfig } from 'vite'
 
-export default {
+export default defineConfig({
   // build: {
   //   watch: {},
   // },
@@ -14,11 +15,15 @@ export default {
       // },
       buildWatch: {
         enable: true,
-        mode: 'snippet',
+        // mode: 'snippet',
         bs: {
-          server: 'dist',
+          // server: 'dist',
+          // proxy: 'http://localhost:3000',
+          // proxy: {
+          //   target: 'http://localhost:3000',
+          // },
         },
       },
     }),
   ],
-}
+})

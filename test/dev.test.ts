@@ -117,7 +117,7 @@ describe('proxy option', () => {
   }
 })
 
-it.skip('snippet option', async () => {
+it('snippet option', async () => {
   const server = await createServer({
     // any valid user config options, plus `mode` and `configFile`
     configFile: false,
