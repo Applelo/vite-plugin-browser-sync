@@ -1,4 +1,3 @@
-import { resolve } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import {
@@ -11,10 +10,9 @@ import {
   it,
   vi,
 } from 'vitest'
-import { build, createServer } from 'vite'
 import { italic, red } from 'kolorist'
-import VitePluginBrowserSync from '../src'
 import type { Options } from '../src/types'
+import { buildWatchServer, devServer } from './_helper'
 
 let browser: Browser
 let page: Page
@@ -37,17 +35,12 @@ afterAll(async () => {
 })
 
 it('deprecation', async () => {
-  const server = await createServer({
-    configFile: false,
-    root: resolve(__dirname, './../demo'),
-    plugins: [VitePluginBrowserSync({ bs: {} })],
-  })
-  await server.listen()
+  const { close } = await devServer({ bs: {} })
   expect(consoleMock).toHaveBeenCalledOnce()
   expect(consoleMock).toHaveBeenCalledWith(red(
     `[vite-plugin-browser-sync] Since 3.0, you should wrap your ${italic('bs')} option inside a ${italic('dev')} object.`,
   ))
-  await server.close()
+  await close()
 })
 
 interface OptionsError {
@@ -90,21 +83,8 @@ const buildOptions: Record<string, OptionsError> = {
 describe('build --watch bs object', async () => {
   for (const [name, { options, expectFailed }] of Object.entries(buildOptions)) {
     it(name, async () => {
-      await build({
-        configFile: false,
-        root: resolve(__dirname, './../demo'),
-        build: {
-          outDir: resolve(__dirname, `./dist/error_build_watch_${name}`),
-          emptyOutDir: true,
-          watch: {},
-        },
-        plugins: [VitePluginBrowserSync({
-          buildWatch: {
-            enable: true,
-            ...options,
-          },
-        })],
-      })
+      const { close } = await buildWatchServer(`error_${name}`, options)
+      await close()
 
       if (expectFailed) {
         expect(consoleMock).toHaveBeenCalledOnce()

@@ -1,4 +1,3 @@
-import { resolve } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import {
@@ -11,9 +10,8 @@ import {
   it,
 } from 'vitest'
 import type { UserConfig } from 'vite'
-import { createServer } from 'vite'
-import VitePluginBrowserSync from '../src'
 import type { Options } from '../src/types'
+import { devServer } from './_helper'
 
 let browser: Browser
 let page: Page
@@ -89,17 +87,7 @@ const configProxy: Record<string, TestConfig> = {
 describe('proxy option', () => {
   for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
     it(name, async () => {
-      const server = await createServer({
-        // any valid user config options, plus `mode` and `configFile`
-        configFile: false,
-        root: resolve(__dirname, './../demo'),
-        plugins: [VitePluginBrowserSync({
-          dev: plugin,
-        })],
-        ...vite,
-      })
-      await server.listen()
-
+      const { close } = await devServer({ dev: plugin }, vite)
       await page.waitForTimeout(100)
       // need to use playwright to test the proxy
       await page.goto(url)
@@ -107,26 +95,20 @@ describe('proxy option', () => {
         'script[src^="/browser-sync/browser-sync-client.js?v="]',
       )
 
-      await server.close()
+      await close()
       expect(script).not.toBeNull()
     })
   }
 })
 
 it('snippet option', async () => {
-  const server = await createServer({
-    // any valid user config options, plus `mode` and `configFile`
-    configFile: false,
-    root: resolve(__dirname, './../demo'),
-    plugins: [VitePluginBrowserSync({ dev: { mode: 'snippet' } })],
-  })
-  await server.listen()
+  const { close } = await devServer({ dev: { mode: 'snippet' } })
 
   await page.goto('http://localhost:5173')
   const script = page.locator(
     'script[src^="http://localhost:3000/browser-sync/browser-sync-client.js?v="]',
   )
 
-  await server.close()
+  await close()
   expect(script).not.toBeNull()
 })

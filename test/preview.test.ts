@@ -1,4 +1,3 @@
-import { resolve } from 'node:path'
 import type { Browser, Page } from 'playwright'
 import { chromium } from 'playwright'
 import {
@@ -11,9 +10,8 @@ import {
   it,
 } from 'vitest'
 import type { UserConfig } from 'vite'
-import { preview } from 'vite'
-import VitePluginBrowserSync from '../src'
 import type { Options } from '../src/types'
+import { previewServer } from './_helper'
 
 let browser: Browser
 let page: Page
@@ -90,36 +88,17 @@ const configProxy: Record<string, TestConfig> = {
 describe('proxy option', () => {
   for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
     it(name, async () => {
-      const previewServer = await preview({
-        configFile: false,
-        root: resolve(__dirname, './../demo'),
-        plugins: [
-          VitePluginBrowserSync({
-            preview: {
-              enable: true,
-              ...plugin,
-            },
-          }),
-        ],
-        ...vite,
-      })
-
-      previewServer.printUrls()
+      const { printUrls, close } = await previewServer(plugin, vite)
+      printUrls()
       await page.waitForTimeout(100)
 
       await page.goto(url)
       const script = page.locator(
         'script[src^="/browser-sync/browser-sync-client.js?v="]',
       )
-      const closePromise = new Promise(
-        resolve => previewServer.httpServer.on('close', () => {
-          resolve(true)
-        }),
-      )
 
       expect(script).not.toBeNull()
-      previewServer.httpServer.close()
-      await closePromise
+      await close()
     })
   }
 })
