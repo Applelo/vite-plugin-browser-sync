@@ -19,6 +19,7 @@ Add [BrowserSync](https://browsersync.io) in your Vite project.
 - ✨ All the [BrowserSync features](https://browsersync.io/)
 - 🙌 Support for BrowserSync `proxy` and `snippet` mode
 - 🔥 Liberty to manage BrowserSync options
+- 🎛️ Can run on `dev`, `preview` or `build --watch`
 
 ## 📦 Install
 
@@ -37,7 +38,7 @@ bun add -D vite-plugin-browser-sync
 
 ## 👨‍💻 Usage
 
-BrowserSync starts alongside your Vite Server. By default, it uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it work !
+By default, BrowserSync will start alongside your Vite Server in `dev`. It uses the `proxy` mode of BrowserSync based on your Vite server options : no need to pass any options to make it works!
 
 ```js
 // vite.config.js / vite.config.ts
@@ -57,11 +58,13 @@ import VitePluginBrowserSync from 'vite-plugin-browser-sync'
 export default {
   plugins: [
     VitePluginBrowserSync({
-      bs: {
-        ui: {
-          port: 8080
-        },
-        notify: false
+      dev: {
+        bs: {
+          ui: {
+            port: 8080
+          },
+          notify: false
+        }
       }
     })
   ]
@@ -77,7 +80,40 @@ import VitePluginBrowserSync from 'vite-plugin-browser-sync'
 export default {
   plugins: [
     VitePluginBrowserSync({
-      mode: 'snippet'
+      dev: {
+        mode: 'snippet'
+      }
+    })
+  ]
+}
+```
+
+You can also enable the plugin on `vite build --watch` mode and `vite preview` mode.
+
+> [!IMPORTANT]
+> - In `buildWatch`, if you use the default `proxy` mode you need to set the `bs` object.
+> - `snippet` mode is available in `buildWatch` but it is not recommanded to use since it update your `index.html` file.
+> - In `preview`, only the `proxy` mode is supported since it will not inject the `snippet`.
+
+```js
+// vite.config.js / vite.config.ts
+import VitePluginBrowserSync from 'vite-plugin-browser-sync'
+
+export default {
+  plugins: [
+    VitePluginBrowserSync({
+      dev: {
+        enable: false,
+      },
+      preview: {
+        enable: true,
+      },
+      buildWatch: {
+        enable: true,
+        bs: {
+          proxy: 'http://localhost:3000',
+        }
+      }
     })
   ]
 }
@@ -112,4 +148,4 @@ If you want to change the overrided options you free to do so via the `bs` objec
 
 ## 👨‍💼 Licence
 
-GPL-3.0
+MIT

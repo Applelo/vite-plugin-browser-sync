@@ -15,33 +15,26 @@ jobs:
 
     strategy:
       matrix:
-        node_version: [14, 16, 18, 20]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        node_version: [16, 18, 20]
+        os: [ubuntu-latest]
         include:
           # Active LTS + other OS
           - os: macos-latest
-            node_version: 18
+            node_version: 20
           - os: windows-latest
-            node_version: 18
+            node_version: 20
       fail-fast: false
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install pnpm (node 14, pnpm 7)
-        if: matrix.node_version == 14
-        uses: pnpm/action-setup@v2.2.4
-        with:
-          version: 7
-
       - name: Install pnpm
-        if: matrix.node_version != 14
         uses: pnpm/action-setup@v2.2.4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node_version }}
           cache: pnpm
 
       - name: Install
@@ -55,6 +48,13 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      - name: Upload artifacts on failure
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: test-project-${{ matrix.os }}-${{ matrix.node_version }}
+          path: test/dist/
 
   coverage:
     runs-on: ubuntu-latest

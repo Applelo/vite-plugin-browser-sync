@@ -1,11 +1,11 @@
 {
   "name": "vite-plugin-browser-sync",
   "type": "module",
-  "version": "2.0.1",
-  "packageManager": "pnpm@8.11.0",
+  "version": "3.0.0",
+  "packageManager": "pnpm@8.15.1",
   "description": "Add BrowserSync in your Vite project",
   "author": "Applelo",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "homepage": "https://github.com/Applelo/vite-plugin-browser-sync",
   "repository": {
     "type": "git",
@@ -38,8 +38,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "build": "tsup src/index.ts --dts --format cjs,esm",
-    "build:watch": "tsup src/index.ts --watch --dts --format cjs,esm",
+    "build": "tsup src/index.ts",
+    "build:watch": "tsup src/index.ts --watch",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "test": "vitest",
     "coverage": "vitest run --coverage",
@@ -50,17 +50,18 @@
   },
   "dependencies": {
     "@types/browser-sync": "^2.29.0",
-    "browser-sync": "^2.29.3",
+    "browser-sync": "^3.0.2",
     "kolorist": "^1.8.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.4.2",
-    "@vitest/coverage-v8": "^1.0.2",
-    "eslint": "^8.55.0",
-    "playwright": "^1.40.1",
+    "@antfu/eslint-config": "^2.6.3",
+    "@vitest/coverage-v8": "^1.2.2",
+    "eslint": "^8.56.0",
+    "playwright": "^1.41.2",
+    "rollup": "^4.9.6",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
-    "vite": "^5.0.6",
-    "vitest": "^1.0.2"
+    "vite": "^5.0.12",
+    "vitest": "^1.2.2"
   }
 }

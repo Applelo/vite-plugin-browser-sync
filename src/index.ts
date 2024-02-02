@@ -1,153 +1,102 @@
 import type { HtmlTagDescriptor, Plugin, ResolvedConfig } from 'vite'
-import browserSync from 'browser-sync'
-import { bold, lightYellow } from 'kolorist'
-
-type OptionsType = 'snippet' | 'proxy'
-
-export interface Options {
-  /**
-   * proxy (default): Browsersync will wrap your vhost with a proxy URL to view your site.
-   * snippet: Inject Browsersync inside your html page
-   */
-  mode?: OptionsType
-  /**
-   * BrowserSync options
-   * @see  https://browsersync.io/docs/options
-   */
-  bs?: browserSync.Options
-}
+import { italic, red } from 'kolorist'
+import type { Env, Options } from './types'
+import { Server } from './server'
 
 export default function VitePluginBrowserSync(options?: Options): Plugin {
   const name = 'vite-plugin-browser-sync'
-  const bsClientVersion = '2.29.3'
-  let bs: browserSync.BrowserSyncInstance
+  // eslint-disable-next-line node/prefer-global/process
+  const bsClientVersion = process.env.BS_VERSION
   let config: ResolvedConfig
-  let mode: OptionsType = options?.mode || 'proxy'
-  const bsOptions: browserSync.Options = options?.bs || {}
+  let env: Env = 'dev'
+  let bsServer: Server | null = null
+  let started = false
+  let applyOnDev = false
+  let applyOnPreview = false
+  let applyOnBuildWatch = false
 
   return {
     name,
-    apply: 'serve',
+    apply(_config, env) {
+      if (options?.bs) {
+        console.error(
+          red(
+            `[vite-plugin-browser-sync] Since 3.0, you should wrap your ${italic('bs')} option inside a ${italic('dev')} object.`,
+          ),
+        )
+        return false
+      }
+
+      applyOnDev = env.command === 'serve' && env.isPreview === false
+      && options?.dev?.enable !== false
+
+      applyOnPreview = env.command === 'serve'
+      && env.isPreview === true
+      && options?.preview?.enable === true
+
+      applyOnBuildWatch = env.command === 'build'
+      // @ts-expect-error true exist on config object with CLI
+      && (_config.build?.watch === true || typeof _config.build?.watch === 'object')
+      && options?.buildWatch?.enable === true
+
+      if (
+        applyOnBuildWatch
+        && options?.buildWatch?.mode !== 'snippet'
+        && typeof options?.buildWatch?.bs?.proxy !== 'string'
+        && typeof options?.buildWatch?.bs?.proxy?.target !== 'string'
+      ) {
+        console.error(
+          red(
+            '[vite-plugin-browser-sync] You need to set a browsersync target.',
+          ),
+        )
+        return false
+      }
+
+      return applyOnDev || applyOnPreview || applyOnBuildWatch
+    },
     configResolved(_config) {
       config = _config
     },
-    configureServer(server) {
-      let viteJSLog = false
-      bs = browserSync.create(name)
-
-      if (typeof bsOptions.logLevel === 'undefined') {
-        bsOptions.logLevel = 'silent'
-        viteJSLog = true
-      }
-
-      if (typeof bsOptions.open === 'undefined')
-        bsOptions.open = typeof config.server.open !== 'undefined'
-
-      // Handle by vite so we disable it
-      if (typeof bsOptions.codeSync === 'undefined')
-        bsOptions.codeSync = false
-
-      if (mode === 'snippet') {
-        // disable log snippet because it is handle by the plugin
-        bsOptions.logSnippet = false
-        bsOptions.snippet = false
-      }
-
-      if (bsOptions.proxy)
-        mode = 'proxy'
-
-      bsOptions.online
-        = bsOptions.online === true
-        || typeof config.server.host !== 'undefined'
-        || false
-
-      const _listen = server.listen
-      server.listen = async () => {
-        const out = await _listen()
-
-        if (mode === 'proxy') {
-          const target
-            = server.resolvedUrls?.local[0]
-            || `${config.server.https ? 'https' : 'http'}://localhost:${
-              config.server.port || 5173
-            }/`
-
-          if (!bsOptions.proxy) {
-            bsOptions.proxy = {
-              target,
-              ws: true,
-            }
-          }
-          else if (typeof bsOptions.proxy === 'string') {
-            bsOptions.proxy = {
-              target: bsOptions.proxy,
-              ws: true,
-            }
-          }
-          else if (
-            typeof bsOptions.proxy === 'object'
-              && !bsOptions.proxy.ws
-          ) {
-            bsOptions.proxy.ws = true
-          }
-        }
-
-        await new Promise((resolve) => {
-          bs.init(bsOptions, () => {
-            resolve(true)
-          })
-        })
-        return out
-      }
-
-      /* c8 ignore start */
-      if (viteJSLog) {
-        const _print = server.printUrls
-
-        const colorUrl = (url: string) =>
-          lightYellow(url.replace(/:(\d+)$/, (_, port) => `:${bold(port)}/`))
-        server.printUrls = () => {
-          const urls: Record<string, string> = bs.getOption('urls').toJS()
-          _print()
-
-          const consoleTexts: Record<string, string>
-            = mode === 'snippet'
-              ? { ui: 'UI' }
-              : {
-                  'local': 'Local',
-                  'external': 'External',
-                  'ui': 'UI',
-                  'ui-external': 'UI External',
-                }
-          for (const key in consoleTexts) {
-            if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
-              const text = consoleTexts[key]
-              if (Object.prototype.hasOwnProperty.call(urls, key)) {
-                config.logger.info(
-                  `  ${lightYellow('➜')}  ${bold(
-                    `BrowserSync - ${text}`,
-                  )}: ${colorUrl(urls[key])}`,
-                )
-              }
-            }
-          }
-        }
-      }
-      /* c8 ignore stop */
-
-      const _close = server.close
-      server.close = async () => {
-        bs.exit()
-        await _close()
-      }
+    buildStart() {
+      if (started || !applyOnBuildWatch)
+        return
+      env = 'buildWatch'
+      bsServer = new Server({
+        env,
+        name,
+        options,
+        config,
+      })
+      started = true
+    },
+    async configureServer(server) {
+      env = 'dev'
+      bsServer = new Server({
+        env,
+        name,
+        server,
+        options,
+        config,
+      })
+    },
+    async configurePreviewServer(server) {
+      env = 'preview'
+      bsServer = new Server({
+        env,
+        name,
+        server,
+        options,
+        config,
+      })
     },
     transformIndexHtml: {
       order: 'post',
-      handler: (html, ctx) => {
-        const server = ctx.server
-        if (mode !== 'snippet' || !bs.active || !server)
+      handler: (html) => {
+        const applySnippet = applyOnDev || applyOnBuildWatch
+        if (!bsServer || bsServer.mode !== 'snippet' || !applySnippet)
           return html
-        const urls: Record<string, string> = bs.getOption('urls').toJS()
+        const urls: Record<string, string> = bsServer.bs.getOption('urls').toJS()
 
         const bsScript: HtmlTagDescriptor = {
           tag: 'script',
