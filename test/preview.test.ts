@@ -33,18 +33,14 @@ afterAll(async () => {
 
 interface TestConfig {
   vite: UserConfig
-  plugin: Options
+  plugin: Options['preview']
   url: string
 }
 
 const configProxy: Record<string, TestConfig> = {
   'default': {
     vite: {},
-    plugin: {
-      preview: {
-        enable: true,
-      },
-    },
+    plugin: {},
     url: 'http://localhost:3000',
   },
   'custom vitejs port': {
@@ -53,21 +49,14 @@ const configProxy: Record<string, TestConfig> = {
         port: 3000,
       },
     },
-    plugin: {
-      preview: {
-        enable: true,
-      },
-    },
+    plugin: {},
     url: 'http://localhost:3001',
   },
   'custom browsersync proxy': {
     vite: {},
     plugin: {
-      preview: {
-        enable: true,
-        bs: {
-          proxy: 'http://localhost:4173',
-        },
+      bs: {
+        proxy: 'http://localhost:4173',
       },
     },
     url: 'http://localhost:3000',
@@ -75,11 +64,8 @@ const configProxy: Record<string, TestConfig> = {
   'custom browsersync proxy object': {
     vite: {},
     plugin: {
-      preview: {
-        enable: true,
-        bs: {
-          proxy: { target: 'http://localhost:4173' },
-        },
+      bs: {
+        proxy: { target: 'http://localhost:4173' },
       },
     },
     url: 'http://localhost:3000',
@@ -91,13 +77,11 @@ const configProxy: Record<string, TestConfig> = {
       },
     },
     plugin: {
-      preview: {
-        enable: true,
-        bs: {
-          proxy: 'http://localhost:3000',
-          port: 4173,
-        },
+      bs: {
+        proxy: 'http://localhost:3000',
+        port: 4173,
       },
+
     },
     url: 'http://localhost:4173',
   },
@@ -110,7 +94,12 @@ describe('proxy option', () => {
         configFile: false,
         root: resolve(__dirname, './../demo'),
         plugins: [
-          VitePluginBrowserSync(plugin),
+          VitePluginBrowserSync({
+            preview: {
+              enable: true,
+              ...plugin,
+            },
+          }),
         ],
         ...vite,
       })

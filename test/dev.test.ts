@@ -33,7 +33,7 @@ afterAll(async () => {
 
 interface TestConfig {
   vite: UserConfig
-  plugin: Options
+  plugin: Options['dev']
   url: string
 }
 
@@ -55,10 +55,8 @@ const configProxy: Record<string, TestConfig> = {
   'custom browsersync proxy': {
     vite: {},
     plugin: {
-      dev: {
-        bs: {
-          proxy: 'http://localhost:5173',
-        },
+      bs: {
+        proxy: 'http://localhost:5173',
       },
     },
     url: 'http://localhost:3000',
@@ -66,10 +64,8 @@ const configProxy: Record<string, TestConfig> = {
   'custom browsersync proxy object': {
     vite: {},
     plugin: {
-      dev: {
-        bs: {
-          proxy: { target: 'http://localhost:5173' },
-        },
+      bs: {
+        proxy: { target: 'http://localhost:5173' },
       },
     },
     url: 'http://localhost:3000',
@@ -81,11 +77,9 @@ const configProxy: Record<string, TestConfig> = {
       },
     },
     plugin: {
-      dev: {
-        bs: {
-          proxy: 'http://localhost:3000',
-          port: 5174,
-        },
+      bs: {
+        proxy: 'http://localhost:3000',
+        port: 5174,
       },
     },
     url: 'http://localhost:5174',
@@ -99,7 +93,9 @@ describe('proxy option', () => {
         // any valid user config options, plus `mode` and `configFile`
         configFile: false,
         root: resolve(__dirname, './../demo'),
-        plugins: [VitePluginBrowserSync(plugin)],
+        plugins: [VitePluginBrowserSync({
+          dev: plugin,
+        })],
         ...vite,
       })
       await server.listen()

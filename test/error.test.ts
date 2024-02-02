@@ -6,6 +6,7 @@ import {
   afterEach,
   beforeAll,
   beforeEach,
+  describe,
   expect,
   it,
   vi,
@@ -13,6 +14,7 @@ import {
 import { build, createServer } from 'vite'
 import { italic, red } from 'kolorist'
 import VitePluginBrowserSync from '../src'
+import type { Options } from '../src/types'
 
 let browser: Browser
 let page: Page
@@ -48,24 +50,71 @@ it('deprecation', async () => {
   await server.close()
 })
 
-it('build --watch bs object', async () => {
-  await build({
-    configFile: false,
-    root: resolve(__dirname, './../demo'),
-    build: {
-      outDir: resolve(__dirname, './dist/error_build_watch'),
-      emptyOutDir: true,
-      watch: {},
-    },
-    plugins: [VitePluginBrowserSync({
-      buildWatch: {
-        enable: true,
-      },
-    })],
-  })
+interface OptionsError {
+  options: Options['buildWatch']
+  expectFailed: boolean
+}
 
-  expect(consoleMock).toHaveBeenCalledOnce()
-  expect(consoleMock).toHaveBeenCalledWith(red(
-    '[vite-plugin-browser-sync] You need to set a browsersync target.',
-  ))
+const buildOptions: Record<string, OptionsError> = {
+  empty: {
+    options: {},
+    expectFailed: true,
+  },
+  filled: {
+    options: {
+      bs: {
+        proxy: {},
+      },
+    },
+    expectFailed: true,
+  },
+  string: {
+    options: {
+      bs: {
+        proxy: 'http://localhost:3000',
+      },
+    },
+    expectFailed: false,
+  },
+  object: {
+    options: {
+      bs: {
+        proxy: {
+          target: 'http://localhost:3000',
+        },
+      },
+    },
+    expectFailed: false,
+  },
+}
+describe('build --watch bs object', async () => {
+  for (const [name, { options, expectFailed }] of Object.entries(buildOptions)) {
+    it(name, async () => {
+      await build({
+        configFile: false,
+        root: resolve(__dirname, './../demo'),
+        build: {
+          outDir: resolve(__dirname, `./dist/error_build_watch_${name}`),
+          emptyOutDir: true,
+          watch: {},
+        },
+        plugins: [VitePluginBrowserSync({
+          buildWatch: {
+            enable: true,
+            ...options,
+          },
+        })],
+      })
+
+      if (expectFailed) {
+        expect(consoleMock).toHaveBeenCalledOnce()
+        expect(consoleMock).toHaveBeenCalledWith(red(
+          '[vite-plugin-browser-sync] You need to set a browsersync target.',
+        ))
+      }
+      else {
+        expect(consoleMock).not.toHaveBeenCalledOnce()
+      }
+    })
+  }
 })
