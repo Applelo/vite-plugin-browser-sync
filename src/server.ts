@@ -224,14 +224,7 @@ export class Server {
 
   private registerClose() {
     if (this.server && 'close' in this.server) {
-      const _close = this.server.close
-      this.server.close = async () => {
-        this.bsServer.exit()
-        await _close()
-      }
-    }
-    else if (this.server) {
-      this.server?.httpServer?.on('close', () => {
+      this.server.httpServer?.on('close', () => {
         this.bsServer.exit()
       })
     }
