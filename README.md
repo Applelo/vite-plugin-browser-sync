@@ -126,18 +126,18 @@ This plugin overrides default options from BrowserSync to doesn't duplicate beha
 If you want to change the overrided options you free to do so via the `bs` object.
 
 | Option                                                          | Why                                                                                                                            | dev | buildWatch | preview |
-|-----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|-----|------------|---------|
-| [logLevel](https://browsersync.io/docs/options#option-logLevel) | Set to `silent`, use ViteJS [printUrls](https://vitejs.dev/guide/api-javascript.html#createserver) to display BrowserSync info | <center>✔️</center>   | <center>✔️</center>          | <center>✔️</center>       |
-| [open](https://browsersync.io/docs/options#option-open)         | Apply ViteJS [open option](https://vitejs.dev/config/server-options.html#server-open)                                          | <center>✔️</center>   |            | <center>✔️</center>       |
-| [codeSync](https://browsersync.io/docs/options#option-codeSync) | Disabled because it is already handle by ViteJS                                                                                |<center>✔️</center>   |            |         |
-| [online](https://browsersync.io/docs/options#option-online)     | Synced with the [server host option](https://vitejs.dev/config/server-options.html#server-host)                                | <center>✔️</center>   |            | <center>✔️</center>       |
+|-----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|:---:|:----------:|:-------:|
+| [logLevel](https://browsersync.io/docs/options#option-logLevel) | Set to `silent`, use ViteJS [printUrls](https://vitejs.dev/guide/api-javascript.html#createserver) to display BrowserSync info |  ✔️  |      ✔️     |    ✔️    |
+| [open](https://browsersync.io/docs/options#option-open)         | Apply ViteJS [open option](https://vitejs.dev/config/server-options.html#server-open)                                          |  ✔️  |            |    ✔️    |
+| [codeSync](https://browsersync.io/docs/options#option-codeSync) | Disabled because it is already handle by ViteJS                                                                                |  ✔️  |            |         |
+| [online](https://browsersync.io/docs/options#option-online)     | Synced with the [server host option](https://vitejs.dev/config/server-options.html#server-host)                                |  ✔️  |            |    ✔️    |
 
 ### For `proxy` mode
 
 | Option                                                           | Why                                           | dev | buildWatch | preview |
-|------------------------------------------------------------------|-----------------------------------------------|-----|------------|---------|
-| [proxy.target](https://browsersync.io/docs/options#option-proxy) | Inject the right url from ViteJS              | <center>✔️</center>   |            | <center>✔️</center>       |
-| [proxy.ws](https://browsersync.io/docs/options#option-proxy)     | Force websocket proxy to make work ViteJS HMR | <center>✔️</center>   |            | <center>✔️</center>       |
+|------------------------------------------------------------------|-----------------------------------------------|:---:|------------|:-------:|
+| [proxy.target](https://browsersync.io/docs/options#option-proxy) | Inject the right url from ViteJS              |  ✔️  |            |    ✔️    |
+| [proxy.ws](https://browsersync.io/docs/options#option-proxy)     | Force websocket proxy to make work ViteJS HMR |  ✔️  |            |    ✔️    |
 
 ### For `snippet` mode
 
