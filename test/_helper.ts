@@ -32,11 +32,15 @@ export async function previewServer(
     root: path.resolve(__dirname, './../demo'),
     plugins: [
       VitePluginBrowserSync({
-        preview: plugin,
+        preview: {
+          enable: true,
+          ...plugin,
+        },
       }),
     ],
     ...vite,
   })
+
   const closePromise = new Promise(
     resolve => previewServer.httpServer.on('close', () => {
       resolve(true)
