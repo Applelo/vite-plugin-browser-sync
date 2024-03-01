@@ -18,7 +18,7 @@ export default defineConfig({
         // mode: 'snippet',
         bs: {
           // server: 'dist',
-          // proxy: 'http://localhost:3000',
+          proxy: 'http://localhost:3000',
           // proxy: {
           //   target: 'http://localhost:3000',
           // },

@@ -88,11 +88,11 @@ export class Server {
     if (typeof bsOptions.logLevel === 'undefined')
       bsOptions.logLevel = 'silent'
 
-    if (typeof bsOptions.open === 'undefined')
+    if (this.server && typeof bsOptions.open === 'undefined')
       bsOptions.open = typeof this.config.server.open !== 'undefined'
 
     // Handle by vite so we disable it
-    if (typeof bsOptions.codeSync === 'undefined')
+    if (this.env === 'dev' && typeof bsOptions.codeSync === 'undefined')
       bsOptions.codeSync = false
 
     if (this.mode === 'snippet') {
@@ -103,8 +103,11 @@ export class Server {
 
     bsOptions.online
       = bsOptions.online === true
-      || typeof this.config.server.host !== 'undefined'
+      || this.server && typeof this.config.server.host !== 'undefined'
       || false
+
+    if (this.env === 'buildWatch')
+      return bsOptions
 
     if (this.mode === 'proxy') {
       let target
