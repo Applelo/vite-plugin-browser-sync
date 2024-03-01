@@ -88,11 +88,11 @@ export class Server {
     if (typeof bsOptions.logLevel === 'undefined')
       bsOptions.logLevel = 'silent'
 
-    if (typeof bsOptions.open === 'undefined')
+    if (this.server && typeof bsOptions.open === 'undefined')
       bsOptions.open = typeof this.config.server.open !== 'undefined'
 
     // Handle by vite so we disable it
-    if (typeof bsOptions.codeSync === 'undefined')
+    if (this.env === 'dev' && typeof bsOptions.codeSync === 'undefined')
       bsOptions.codeSync = false
 
     if (this.mode === 'snippet') {
@@ -103,8 +103,11 @@ export class Server {
 
     bsOptions.online
       = bsOptions.online === true
-      || typeof this.config.server.host !== 'undefined'
+      || (this.server && typeof this.config.server.host !== 'undefined')
       || false
+
+    if (this.env === 'buildWatch')
+      return bsOptions
 
     if (this.mode === 'proxy') {
       let target
@@ -223,15 +226,14 @@ export class Server {
   }
 
   private registerClose() {
-    if (this.server && 'close' in this.server) {
+    if (this.server) {
       const _close = this.server.close
       this.server.close = async () => {
         this.bsServer.exit()
         await _close()
       }
-    }
-    else if (this.server) {
-      this.server?.httpServer?.on('close', () => {
+
+      this.server.httpServer?.on('close', () => {
         this.bsServer.exit()
       })
     }

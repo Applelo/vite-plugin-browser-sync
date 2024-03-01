@@ -65,6 +65,7 @@ const buildOptions: Record<string, OptionsError> = {
     options: {
       bs: {
         proxy: 'http://localhost:3000',
+        open: false,
       },
     },
     expectFailed: false,
@@ -75,6 +76,7 @@ const buildOptions: Record<string, OptionsError> = {
         proxy: {
           target: 'http://localhost:3000',
         },
+        open: false,
       },
     },
     expectFailed: false,
