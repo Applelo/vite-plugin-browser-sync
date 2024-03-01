@@ -103,7 +103,7 @@ export class Server {
 
     bsOptions.online
       = bsOptions.online === true
-      || this.server && typeof this.config.server.host !== 'undefined'
+      || (this.server && typeof this.config.server.host !== 'undefined')
       || false
 
     if (this.env === 'buildWatch')
