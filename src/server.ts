@@ -87,16 +87,27 @@ export class Server {
     return configPort || defaultPort
   }
 
+  /**
+   * Get user options
+   *  @readonly
+   */
   private get userOptions(): OptionsPreview | OptionsBuildWatch | OptionsDev | undefined {
     return this.options && this.env in this.options
       ? this.options[this.env]
       : {}
   }
 
+  /**
+   * Get user browsersync options
+   *  @readonly
+   */
   private get userBsOptions(): BrowserSyncOptions {
     return this.userOptions && this.userOptions.bs ? this.userOptions.bs : {}
   }
 
+  /**
+   * Get Final browsersync options
+   */
   private get bsOptions(): BrowserSyncOptions {
     const bsOptions = this.userBsOptions
 
