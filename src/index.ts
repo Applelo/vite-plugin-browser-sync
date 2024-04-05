@@ -8,6 +8,39 @@ import { italic, red } from 'kolorist'
 import type { Env, Options } from './types'
 import { Server } from './server'
 
+/**
+ * Vite plugin
+ *
+ * @example <caption>Basic Usage</caption>
+ * ```ts
+ * // vite.config.js / vite.config.ts
+ * import VitePluginBrowserSync from 'vite-plugin-browser-sync'
+ *
+ * export default {
+ *   plugins: [VitePluginBrowserSync()]
+ * }
+ * ```
+ * @example <caption>With options</caption>
+ * ```ts
+ * // vite.config.js / vite.config.ts
+ * import VitePluginBrowserSync from 'vite-plugin-browser-sync'
+ *
+ * export default {
+ *  plugins: [
+ *     VitePluginBrowserSync({
+ *       dev: {
+ *         bs: {
+ *           ui: {
+ *             port: 8080
+ *           },
+ *           notify: false
+ *         }
+ *       }
+ *     })
+ *   ]
+ * }
+ * ```
+ */
 export default function VitePluginBrowserSync(options?: Options): Plugin {
   const name = 'vite-plugin-browser-sync'
   // eslint-disable-next-line node/prefer-global/process
