@@ -11,6 +11,9 @@ const defaultPorts: Record<Env, number | null> = {
   buildWatch: null,
 }
 
+/**
+ * Hook browsersync server on vite
+ */
 export class Server {
   private name: string
   private server?: ViteServer
@@ -43,7 +46,11 @@ export class Server {
     this.registerClose()
   }
 
-  public get mode() {
+  /**
+   * Get browser sync mode
+   * @readonly
+   */
+  public get mode(): BsMode {
     if (this.env === 'preview')
       return 'proxy'
     let mode: BsMode = this.userOptions
@@ -58,11 +65,19 @@ export class Server {
     return mode
   }
 
-  public get bs() {
+  /**
+   * Get browser sync instance
+   * @readonly
+   */
+  public get bs(): BrowserSyncInstance {
     return this.bsServer
   }
 
-  private get port() {
+  /**
+   * Get vite server port
+   * @readonly
+   */
+  private get port(): number | null {
     if (this.env === 'buildWatch' || !this.server)
       return null
     const defaultPort = defaultPorts[this.env]
@@ -82,7 +97,7 @@ export class Server {
     return this.userOptions && this.userOptions.bs ? this.userOptions.bs : {}
   }
 
-  private get bsOptions() {
+  private get bsOptions(): BrowserSyncOptions {
     const bsOptions = this.userBsOptions
 
     if (typeof bsOptions.logLevel === 'undefined')
@@ -143,7 +158,10 @@ export class Server {
     return bsOptions
   }
 
-  private init() {
+  /**
+   * Init browsersync server
+   */
+  private init(): Promise<BrowserSyncInstance> {
     return new Promise<BrowserSyncInstance>((resolve, reject) => {
       this.bsServer.init(this.bsOptions, (error, bs) => {
         if (error) {
@@ -159,6 +177,9 @@ export class Server {
   }
 
   /* c8 ignore start */
+  /**
+   * Log browsersync infos
+   */
   private log() {
     const colorUrl = (url: string) =>
       lightYellow(url.replace(/:(\d+)$/, (_, port) => `:${bold(port)}/`))
@@ -185,6 +206,9 @@ export class Server {
     }
   }
 
+  /**
+   * Register log function on vite
+   */
   private registerLog() {
     if (!this.logged)
       return
@@ -202,6 +226,9 @@ export class Server {
   }
   /* c8 ignore stop */
 
+  /**
+   * Register init
+   */
   private async registerInit() {
     if (this.server && 'listen' in this.server) {
       const _listen = this.server.listen
@@ -225,6 +252,9 @@ export class Server {
     this.registerLog()
   }
 
+  /**
+   * Register close
+   */
   private registerClose() {
     if (this.server) {
       const _close = this.server.close

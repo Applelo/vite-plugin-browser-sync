@@ -1,3 +1,8 @@
+/**
+ * This entry file is for the plugin.
+ * @module
+ */
+
 import type { HtmlTagDescriptor, Plugin, ResolvedConfig } from 'vite'
 import { italic, red } from 'kolorist'
 import type { Env, Options } from './types'
