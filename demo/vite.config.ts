@@ -7,6 +7,12 @@ export default defineConfig({
   // },
   plugins: [
     VitePluginBrowserSync({
+      dev: {
+        enable: true,
+        bs: {
+          online: true,
+        },
+      },
       preview: {
         enable: true,
         bs: {
