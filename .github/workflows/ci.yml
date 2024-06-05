@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node_version: [16, 18, 20]
+        node_version: [18, 20]
         os: [ubuntu-latest]
         include:
           # Active LTS + other OS
@@ -26,13 +26,13 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.4
+        uses: pnpm/action-setup@v4
 
       - name: Use Node.js ${{ matrix.node_version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
           cache: pnpm
@@ -50,7 +50,7 @@ jobs:
         run: pnpm test
 
       - name: Upload artifacts on failure
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: test-project-${{ matrix.os }}-${{ matrix.node_version }}
@@ -61,16 +61,14 @@ jobs:
     name: Coverage
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v2.2.4
-        with:
-          version: 8
+      - uses: pnpm/action-setup@v4
 
       - name: Set node version to 20
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
@@ -97,14 +95,14 @@ jobs:
     name: 'Lint: node-20, ubuntu-latest'
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v2.2.4
+      - uses: pnpm/action-setup@v4
 
       - name: Set node version to 20
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
