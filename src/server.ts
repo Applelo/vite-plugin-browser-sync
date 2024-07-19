@@ -225,10 +225,20 @@ export class Server {
       return
 
     if (this.server && this.env === 'dev') {
-      const _print = this.server.printUrls
-      this.server.printUrls = () => {
-        _print()
-        this.log()
+      // Fix for Astro
+      if ('pluginContainer' in this.server
+        && this.server.pluginContainer.plugins.findIndex(
+          plugin => plugin.name === 'astro:server',
+        )
+      ) {
+        setTimeout(() => this.log(), 1000)
+      }
+      else {
+        const _print = this.server.printUrls
+        this.server.printUrls = () => {
+          _print()
+          this.log()
+        }
       }
     }
     else {
