@@ -8,10 +8,11 @@ import type { Options } from '../src/types'
 export async function devServer(
   plugin: Options = {},
   vite: UserConfig = {},
+  demo: 'basic' | 'astro' = 'basic',
 ) {
   const server = await createServer({
     configFile: false,
-    root: path.resolve(__dirname, './../demo'),
+    root: path.resolve(__dirname, `./../demo/${demo}`),
     plugins: [VitePluginBrowserSync(plugin)],
     ...vite,
   })
@@ -29,7 +30,7 @@ export async function previewServer(
 ) {
   const previewServer = await preview({
     configFile: false,
-    root: path.resolve(__dirname, './../demo'),
+    root: path.resolve(__dirname, './../demo/basic'),
     plugins: [
       VitePluginBrowserSync({
         preview: {
@@ -66,7 +67,7 @@ export async function buildWatchServer(
   const watcher = await new Promise<RollupWatcher>((resolve) => {
     const watcher = build({
       configFile: false,
-      root: path.resolve(__dirname, './../demo'),
+      root: path.resolve(__dirname, './../demo/basic'),
       build: {
         watch: {},
         emptyOutDir: true,

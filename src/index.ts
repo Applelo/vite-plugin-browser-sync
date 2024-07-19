@@ -65,7 +65,8 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
         return false
       }
 
-      applyOnDev = env.command === 'serve' && env.isPreview === false
+      applyOnDev = env.command === 'serve'
+      && (typeof env.isPreview === 'undefined' || env.isPreview === false)
       && options?.dev?.enable !== false
 
       applyOnPreview = env.command === 'serve'
