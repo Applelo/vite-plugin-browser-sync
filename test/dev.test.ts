@@ -85,20 +85,23 @@ const configProxy: Record<string, TestConfig> = {
 }
 
 describe('proxy option', () => {
-  for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
-    it(name, async () => {
-      const { close } = await devServer({ dev: plugin }, vite)
-      await page.waitForTimeout(100)
-      // need to use playwright to test the proxy
-      await page.goto(url)
-      const script = page.locator(
-        'script[src^="/browser-sync/browser-sync-client.js?v="]',
-      )
+  const demos = ['basic', 'astro']
+  demos.forEach((demo) => {
+    for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
+      it(`${demo} - ${name}`, async () => {
+        const { close } = await devServer({ dev: plugin }, vite, demo as 'basic' | 'astro')
+        await page.waitForTimeout(100)
+        // need to use playwright to test the proxy
+        await page.goto(url)
+        const script = page.locator(
+          'script[src^="/browser-sync/browser-sync-client.js?v="]',
+        )
 
-      await close()
-      expect(script).not.toBeNull()
-    })
-  }
+        await close()
+        expect(script).not.toBeNull()
+      })
+    }
+  })
 })
 
 it('snippet option', async () => {
