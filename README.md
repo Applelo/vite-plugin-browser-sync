@@ -120,7 +120,7 @@ export default {
 ```
 
 > [!NOTE]
-> For Astro user, this plugin will not working in preview mode because of [overides made by Astro](https://github.com/withastro/astro/blob/a6c4e6754493e7af5c953b644c6a19461f15467b/packages/astro/src/core/preview/static-preview-server.ts#L40).
+> For Astro user, this plugin is not working in preview mode because of [overrides made by Astro](https://github.com/withastro/astro/blob/a6c4e6754493e7af5c953b644c6a19461f15467b/packages/astro/src/core/preview/static-preview-server.ts#L40).
 
 ## vite-plugin-browser-sync options for BrowserSync
 
