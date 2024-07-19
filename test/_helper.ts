@@ -66,7 +66,7 @@ export async function buildWatchServer(
   const watcher = await new Promise<RollupWatcher>((resolve) => {
     const watcher = build({
       configFile: false,
-      root: path.resolve(__dirname, './../demo'),
+      root: path.resolve(__dirname, './../demo/basic'),
       build: {
         watch: {},
         emptyOutDir: true,
