@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@9.5.0",
+  "packageManager": "pnpm@9.9.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -11,8 +11,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "^5.5.3",
-    "vite": "^5.3.4",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2",
     "vite-plugin-browser-sync": "workspace:*"
   }
 }
