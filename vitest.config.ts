@@ -11,5 +11,6 @@ export default defineConfig({
       reporter: ['lcov'],
     },
     fileParallelism: false,
+    isolate: false,
   },
 })
