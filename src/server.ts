@@ -1,4 +1,5 @@
 import type { BrowserSyncInstance, Options as BrowserSyncOptions } from 'browser-sync'
+import type { OutputPlugin } from 'rollup'
 import type { ResolvedConfig } from 'vite'
 import type { BsMode, Env, Options, OptionsBuildWatch, OptionsDev, OptionsPreview, ViteServer } from './types'
 import process from 'node:process'
@@ -226,11 +227,24 @@ export class Server {
 
     if (this.server && this.env === 'dev') {
       // Fix for Astro
-      if ('pluginContainer' in this.server
+      let astroServer = false
+      try {
+        // Vite 6
+        astroServer = 'pluginContainer' in this.server
         && this.server.environments.client.plugins.findIndex(
           plugin => plugin.name === 'astro:server',
-        )
-      ) {
+        ) > -1
+      }
+      catch {
+        // Vite 5
+        astroServer = 'pluginContainer' in this.server
+        // @ts-expect-error Vite 5 support
+        && this.server.pluginContainer.plugins.findIndex(
+          (plugin: OutputPlugin) => plugin.name === 'astro:server',
+        ) > -1
+      }
+
+      if (astroServer) {
         setTimeout(() => this.log(), 1000)
       }
       else {

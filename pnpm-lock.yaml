@@ -73,6 +73,18 @@ importers:
         specifier: workspace:*
         version: link:../..
 
+  demo/basic-vite5:
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.2
+      vite:
+        specifier: ^5.4.11
+        version: 5.4.11(@types/node@22.10.2)
+      vite-plugin-browser-sync:
+        specifier: workspace:*
+        version: link:../..
+
 packages:
 
   '@ampproject/remapping@2.3.0':
