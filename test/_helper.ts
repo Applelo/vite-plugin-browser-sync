@@ -1,9 +1,9 @@
-import path from 'node:path'
-import { build, createServer, preview } from 'vite'
 import type { RollupWatcher } from 'rollup'
 import type { UserConfig } from 'vite'
-import VitePluginBrowserSync from '../src'
 import type { Options } from '../src/types'
+import path from 'node:path'
+import { build, createServer, preview } from 'vite'
+import VitePluginBrowserSync from '../src'
 
 export async function devServer(
   plugin: Options = {},

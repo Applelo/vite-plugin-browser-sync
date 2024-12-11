@@ -1,5 +1,5 @@
-import { defineConfig } from 'tsup'
 import pkg from 'browser-sync/package.json' with { type: 'json' }
+import { defineConfig } from 'tsup'
 
 export default defineConfig({
   entry: ['src/index.ts'],

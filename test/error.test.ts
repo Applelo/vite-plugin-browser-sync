@@ -1,4 +1,6 @@
 import type { Browser, Page } from 'playwright'
+import type { Options } from '../src/types'
+import { italic, red } from 'kolorist'
 import { chromium } from 'playwright'
 import {
   afterAll,
@@ -10,8 +12,6 @@ import {
   it,
   vi,
 } from 'vitest'
-import { italic, red } from 'kolorist'
-import type { Options } from '../src/types'
 import { buildWatchServer, devServer } from './_helper'
 
 let browser: Browser

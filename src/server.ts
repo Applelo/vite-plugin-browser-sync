@@ -1,9 +1,9 @@
-import process from 'node:process'
 import type { BrowserSyncInstance, Options as BrowserSyncOptions } from 'browser-sync'
-import { create } from 'browser-sync'
 import type { ResolvedConfig } from 'vite'
-import { bold, lightYellow, red } from 'kolorist'
 import type { BsMode, Env, Options, OptionsBuildWatch, OptionsDev, OptionsPreview, ViteServer } from './types'
+import process from 'node:process'
+import { create } from 'browser-sync'
+import { bold, lightYellow, red } from 'kolorist'
 
 const defaultPorts: Record<Env, number | null> = {
   dev: 5173,
@@ -227,7 +227,7 @@ export class Server {
     if (this.server && this.env === 'dev') {
       // Fix for Astro
       if ('pluginContainer' in this.server
-        && this.server.pluginContainer.plugins.findIndex(
+        && this.server.environments.client.plugins.findIndex(
           plugin => plugin.name === 'astro:server',
         )
       ) {

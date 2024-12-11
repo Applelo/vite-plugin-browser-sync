@@ -1,4 +1,6 @@
 import type { Browser, Page } from 'playwright'
+import type { UserConfig } from 'vite'
+import type { Options } from '../src/types'
 import { chromium } from 'playwright'
 import {
   afterAll,
@@ -9,8 +11,6 @@ import {
   expect,
   it,
 } from 'vitest'
-import type { UserConfig } from 'vite'
-import type { Options } from '../src/types'
 import { devServer } from './_helper'
 
 let browser: Browser
