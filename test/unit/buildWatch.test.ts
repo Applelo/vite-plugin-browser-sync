@@ -4,7 +4,7 @@ import {
   expect,
   it,
 } from 'vitest'
-import { buildWatchServer } from './_helper'
+import { buildWatchServer } from './../_helper'
 
 it('snippet option', async () => {
   const { close } = await buildWatchServer('snippet', { mode: 'snippet' })

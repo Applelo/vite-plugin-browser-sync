@@ -71,7 +71,7 @@ export async function buildWatchServer(
       build: {
         watch: {},
         emptyOutDir: true,
-        outDir: path.resolve(__dirname, `./dist/buildWatch_${name}`),
+        outDir: path.resolve(__dirname, `./unit/dist/buildWatch_${name}`),
       },
       plugins: [
         VitePluginBrowserSync({

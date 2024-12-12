@@ -1,37 +1,22 @@
-import type { Browser, Page } from 'playwright'
-import type { Options } from '../src/types'
+import type { Options } from '../../src/types'
 import { italic, red } from 'kolorist'
-import { chromium } from 'playwright'
 import {
   afterAll,
   afterEach,
-  beforeAll,
-  beforeEach,
   describe,
   expect,
   it,
   vi,
 } from 'vitest'
-import { buildWatchServer, devServer } from './_helper'
-
-let browser: Browser
-let page: Page
+import { buildWatchServer, devServer } from './../_helper'
 
 const consoleMock = vi.spyOn(console, 'error').mockImplementation(() => undefined)
 
-beforeAll(async () => {
-  browser = await chromium.launch()
-})
-beforeEach(async () => {
-  page = await browser.newPage()
-})
 afterEach(async () => {
-  await page.close()
   consoleMock.mockClear()
 })
 afterAll(async () => {
   consoleMock.mockReset()
-  await browser.close()
 })
 
 it('deprecation', async () => {

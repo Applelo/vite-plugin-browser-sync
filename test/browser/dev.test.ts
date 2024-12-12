@@ -1,6 +1,6 @@
 import type { Browser, Page } from 'playwright'
 import type { UserConfig } from 'vite'
-import type { Options } from '../src/types'
+import type { Options } from '../../src/types'
 import { chromium } from 'playwright'
 import {
   afterAll,
@@ -11,7 +11,7 @@ import {
   expect,
   it,
 } from 'vitest'
-import { devServer } from './_helper'
+import { devServer } from './../_helper'
 
 let browser: Browser
 let page: Page
@@ -37,11 +37,7 @@ interface TestConfig {
 
 const configProxy: Record<string, TestConfig> = {
   'default': {
-    vite: {
-      server: {
-        port: 5174,
-      },
-    },
+    vite: {},
     plugin: {},
     url: 'http://localhost:3000',
   },
@@ -55,27 +51,19 @@ const configProxy: Record<string, TestConfig> = {
     url: 'http://localhost:3001',
   },
   'custom browsersync proxy': {
-    vite: {
-      server: {
-        port: 5174,
-      },
-    },
+    vite: {},
     plugin: {
       bs: {
-        proxy: 'http://localhost:5174',
+        proxy: 'http://localhost:5173',
       },
     },
     url: 'http://localhost:3000',
   },
   'custom browsersync proxy object': {
-    vite: {
-      server: {
-        port: 5174,
-      },
-    },
+    vite: {},
     plugin: {
       bs: {
-        proxy: { target: 'http://localhost:5174' },
+        proxy: { target: 'http://localhost:5173' },
       },
     },
     url: 'http://localhost:3000',
