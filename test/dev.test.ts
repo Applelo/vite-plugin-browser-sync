@@ -37,7 +37,11 @@ interface TestConfig {
 
 const configProxy: Record<string, TestConfig> = {
   'default': {
-    vite: {},
+    vite: {
+      server: {
+        port: 5174,
+      },
+    },
     plugin: {},
     url: 'http://localhost:3000',
   },
@@ -51,19 +55,27 @@ const configProxy: Record<string, TestConfig> = {
     url: 'http://localhost:3001',
   },
   'custom browsersync proxy': {
-    vite: {},
+    vite: {
+      server: {
+        port: 5174,
+      },
+    },
     plugin: {
       bs: {
-        proxy: 'http://localhost:5173',
+        proxy: 'http://localhost:5174',
       },
     },
     url: 'http://localhost:3000',
   },
   'custom browsersync proxy object': {
-    vite: {},
+    vite: {
+      server: {
+        port: 5174,
+      },
+    },
     plugin: {
       bs: {
-        proxy: { target: 'http://localhost:5173' },
+        proxy: { target: 'http://localhost:5174' },
       },
     },
     url: 'http://localhost:3000',
