@@ -1,4 +1,6 @@
 import type { Browser, Page } from 'playwright'
+import type { UserConfig } from 'vite'
+import type { Options } from '../../src/types'
 import { chromium } from 'playwright'
 import {
   afterAll,
@@ -9,9 +11,7 @@ import {
   expect,
   it,
 } from 'vitest'
-import type { UserConfig } from 'vite'
-import type { Options } from '../src/types'
-import { devServer } from './_helper'
+import { previewServer } from './../_helper'
 
 let browser: Browser
 let page: Page
@@ -31,7 +31,7 @@ afterAll(async () => {
 
 interface TestConfig {
   vite: UserConfig
-  plugin: Options['dev']
+  plugin: Options['preview']
   url: string
 }
 
@@ -43,7 +43,7 @@ const configProxy: Record<string, TestConfig> = {
   },
   'custom vitejs port': {
     vite: {
-      server: {
+      preview: {
         port: 3000,
       },
     },
@@ -54,7 +54,7 @@ const configProxy: Record<string, TestConfig> = {
     vite: {},
     plugin: {
       bs: {
-        proxy: 'http://localhost:5173',
+        proxy: 'http://localhost:4173',
       },
     },
     url: 'http://localhost:3000',
@@ -63,55 +63,42 @@ const configProxy: Record<string, TestConfig> = {
     vite: {},
     plugin: {
       bs: {
-        proxy: { target: 'http://localhost:5173' },
+        proxy: { target: 'http://localhost:4173' },
       },
     },
     url: 'http://localhost:3000',
   },
   'custom browsersync proxy and vitejs port': {
     vite: {
-      server: {
+      preview: {
         port: 3000,
       },
     },
     plugin: {
       bs: {
         proxy: 'http://localhost:3000',
-        port: 5174,
+        port: 4173,
       },
+
     },
-    url: 'http://localhost:5174',
+    url: 'http://localhost:4173',
   },
 }
 
 describe('proxy option', () => {
-  const demos = ['basic', 'astro']
-  demos.forEach((demo) => {
-    for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
-      it(`${demo} - ${name}`, async () => {
-        const { close } = await devServer({ dev: plugin }, vite, demo as 'basic' | 'astro')
-        await page.waitForTimeout(100)
-        // need to use playwright to test the proxy
-        await page.goto(url)
-        const script = page.locator(
-          'script[src^="/browser-sync/browser-sync-client.js?v="]',
-        )
+  for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
+    it(name, async () => {
+      const { printUrls, close } = await previewServer(plugin, vite)
+      printUrls()
+      await page.waitForTimeout(100)
 
-        await close()
-        expect(script).not.toBeNull()
-      })
-    }
-  })
-})
+      await page.goto(url)
+      const script = page.locator(
+        'script[src^="/browser-sync/browser-sync-client.js?v="]',
+      )
 
-it('snippet option', async () => {
-  const { close } = await devServer({ dev: { mode: 'snippet' } })
-
-  await page.goto('http://localhost:5173')
-  const script = page.locator(
-    'script[src^="http://localhost:3000/browser-sync/browser-sync-client.js?v="]',
-  )
-
-  await close()
-  expect(script).not.toBeNull()
+      expect(script).not.toBeNull()
+      await close()
+    })
+  }
 })

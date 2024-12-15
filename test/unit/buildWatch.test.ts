@@ -1,10 +1,10 @@
-import path from 'node:path'
 import { promises as fs } from 'node:fs'
+import path from 'node:path'
 import {
   expect,
   it,
 } from 'vitest'
-import { buildWatchServer } from './_helper'
+import { buildWatchServer } from './../_helper'
 
 it('snippet option', async () => {
   const { close } = await buildWatchServer('snippet', { mode: 'snippet' })

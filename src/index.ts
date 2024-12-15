@@ -4,8 +4,8 @@
  */
 
 import type { HtmlTagDescriptor, Plugin, ResolvedConfig } from 'vite'
-import { italic, red } from 'kolorist'
 import type { Env, Options } from './types'
+import { italic, red } from 'kolorist'
 import { Server } from './server'
 
 /**

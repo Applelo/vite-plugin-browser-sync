@@ -4,7 +4,7 @@
 
 Add [BrowserSync](https://browsersync.io) in your Vite project.
 
-> This plugin supports Vite 4 and 5.
+> This plugin supports Vite 5 and 6.
 
 <p align="center">
 <a href="https://github.com/Applelo/vite-plugin-browser-sync/blob/main/screenshot.png?raw=true">
