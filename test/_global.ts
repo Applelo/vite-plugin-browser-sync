@@ -1,6 +1,7 @@
-import { EventEmitter } from 'node:events'
+import events from 'node:events'
+import process from 'node:process'
 
-EventEmitter.defaultMaxListeners = 20
 export default function setup() {
-
+  events.defaultMaxListeners = 20
+  process.setMaxListeners(20)
 }
