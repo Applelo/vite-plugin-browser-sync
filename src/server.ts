@@ -136,8 +136,8 @@ export class Server {
 
     bsOptions.online
       = bsOptions.online === true
-      || (this.server && typeof this.config.server.host !== 'undefined')
-      || false
+        || (this.server && typeof this.config.server.host !== 'undefined')
+        || false
 
     if (this.env === 'buildWatch')
       return bsOptions
@@ -237,17 +237,17 @@ export class Server {
       try {
         // Vite 6
         astroServer = 'pluginContainer' in this.server
-        && this.server.environments.client.plugins.findIndex(
-          plugin => plugin.name === 'astro:server',
-        ) > -1
+          && this.server.environments.client.plugins.findIndex(
+            plugin => plugin.name === 'astro:server',
+          ) > -1
       }
       catch {
         // Vite 5
         astroServer = 'pluginContainer' in this.server
         // @ts-expect-error Vite 5 support
-        && this.server.pluginContainer.plugins.findIndex(
-          (plugin: OutputPlugin) => plugin.name === 'astro:server',
-        ) > -1
+          && this.server.pluginContainer.plugins.findIndex(
+            (plugin: OutputPlugin) => plugin.name === 'astro:server',
+          ) > -1
       }
 
       if (astroServer) {

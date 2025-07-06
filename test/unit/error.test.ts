@@ -8,7 +8,7 @@ import {
   it,
   vi,
 } from 'vitest'
-import { buildWatchServer, devServer } from './../_helper'
+import { buildWatchServer } from './../_helper'
 
 const consoleMock = vi.spyOn(console, 'error').mockImplementation(() => undefined)
 

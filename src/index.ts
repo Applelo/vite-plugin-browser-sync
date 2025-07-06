@@ -57,17 +57,17 @@ export default function VitePluginBrowserSync(options?: Options): Plugin {
     name,
     apply(_config, env) {
       applyOnDev = env.command === 'serve'
-      && (typeof env.isPreview === 'undefined' || env.isPreview === false)
-      && options?.dev?.enable !== false
+        && (typeof env.isPreview === 'undefined' || env.isPreview === false)
+        && options?.dev?.enable !== false
 
       applyOnPreview = env.command === 'serve'
-      && env.isPreview === true
-      && options?.preview?.enable === true
+        && env.isPreview === true
+        && options?.preview?.enable === true
 
       applyOnBuildWatch = env.command === 'build'
       // @ts-expect-error true exist on config object with CLI
-      && (_config.build?.watch === true || typeof _config.build?.watch === 'object')
-      && options?.buildWatch?.enable === true
+        && (_config.build?.watch === true || typeof _config.build?.watch === 'object')
+        && options?.buildWatch?.enable === true
 
       if (
         applyOnBuildWatch
