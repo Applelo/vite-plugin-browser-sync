@@ -11,8 +11,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "^5.7.2",
-    "vite": "^6.0.3",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.2",
     "vite-plugin-browser-sync": "workspace:*"
   }
 }

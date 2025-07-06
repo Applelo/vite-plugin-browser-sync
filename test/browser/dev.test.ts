@@ -89,7 +89,7 @@ describe('proxy option', () => {
   demos.forEach((demo) => {
     for (const [name, { vite, plugin, url }] of Object.entries(configProxy)) {
       it(`${demo} - ${name}`, async () => {
-        const { close } = await devServer({ dev: plugin }, vite, demo as 'basic' | 'astro')
+        const { close } = await devServer(plugin, vite, demo as 'basic' | 'astro')
         await page.waitForTimeout(100)
         // need to use playwright to test the proxy
         await page.goto(url)
@@ -105,7 +105,7 @@ describe('proxy option', () => {
 })
 
 it('snippet option', async () => {
-  const { close } = await devServer({ dev: { mode: 'snippet' } })
+  const { close } = await devServer({ mode: 'snippet' })
 
   await page.goto('http://localhost:5173')
   const script = page.locator(
