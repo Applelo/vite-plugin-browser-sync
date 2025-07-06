@@ -1,5 +1,5 @@
 import type { Options } from '../../src/types'
-import { italic, red } from 'kolorist'
+import { red } from 'kolorist'
 import {
   afterAll,
   afterEach,
@@ -17,15 +17,6 @@ afterEach(async () => {
 })
 afterAll(async () => {
   consoleMock.mockReset()
-})
-
-it('deprecation', async () => {
-  const { close } = await devServer({ bs: {} })
-  expect(consoleMock).toHaveBeenCalledOnce()
-  expect(consoleMock).toHaveBeenCalledWith(red(
-    `[vite-plugin-browser-sync] Since 3.0, you should wrap your ${italic('bs')} option inside a ${italic('dev')} object.`,
-  ))
-  await close()
 })
 
 interface OptionsError {

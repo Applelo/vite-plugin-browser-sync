@@ -19,7 +19,8 @@
     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "declarationDir": "./declarations",
     /* Raise error on expressions and declarations with an implied 'any' type. */
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules", "test", "dist", "demo", "vitest.config.ts", "vitest.workspace.ts", "tsup.config.ts"]
+  "include": ["src"]
 }

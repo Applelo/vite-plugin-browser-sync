@@ -6,14 +6,14 @@ import { build, createServer, preview } from 'vite'
 import VitePluginBrowserSync from '../src'
 
 export async function devServer(
-  plugin: Options = {},
+  plugin: Options['dev'] = {},
   vite: UserConfig = {},
   demo: 'basic' | 'astro' = 'basic',
 ) {
   const server = await createServer({
     configFile: false,
     root: path.resolve(__dirname, `./../demo/${demo}`),
-    plugins: [VitePluginBrowserSync(plugin)],
+    plugins: [VitePluginBrowserSync({ dev: plugin })],
     ...vite,
   })
   await server.listen()

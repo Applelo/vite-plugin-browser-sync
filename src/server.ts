@@ -115,8 +115,14 @@ export class Server {
     if (typeof bsOptions.logLevel === 'undefined')
       bsOptions.logLevel = 'silent'
 
-    if (this.server && typeof bsOptions.open === 'undefined')
-      bsOptions.open = typeof this.config.server.open !== 'undefined'
+    if (typeof bsOptions.open !== 'undefined') {
+      if (this.env === 'dev' && typeof this.config.server.open === 'boolean') {
+        bsOptions.open = false
+      }
+      else if (this.env === 'preview' && typeof this.config.preview.open === 'boolean') {
+        bsOptions.open = false
+      }
+    }
 
     // Handle by vite so we disable it
     if (this.env === 'dev' && typeof bsOptions.codeSync === 'undefined')

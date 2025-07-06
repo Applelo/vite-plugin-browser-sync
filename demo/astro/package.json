@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "astro": "^5.0.5",
-    "typescript": "^5.7.2",
+    "astro": "^5.11.0",
+    "typescript": "^5.8.3",
     "vite-plugin-browser-sync": "workspace:*"
   }
 }
