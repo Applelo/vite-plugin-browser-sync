@@ -3,7 +3,6 @@
   "type": "module",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -13,8 +12,8 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "astro": "^5.11.0",
-    "typescript": "^5.8.3",
+    "astro": "^5.13.2",
+    "typescript": "^5.9.2",
     "vite-plugin-browser-sync": "workspace:*"
   }
 }

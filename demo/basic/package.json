@@ -3,7 +3,6 @@
   "type": "module",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -11,9 +10,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.0",
-    "typescript": "^5.8.3",
-    "vite": "^7.0.2",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "typescript": "^5.9.2",
+    "vite": "^6.3.5",
     "vite-plugin-browser-sync": "workspace:*"
   }
 }
