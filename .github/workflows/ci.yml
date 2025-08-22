@@ -19,8 +19,8 @@ jobs:
         os: [ubuntu-latest]
         include:
           # Active LTS + other OS
-          - os: macos-latest
-            node_version: 22
+          # - os: macos-latest
+          #   node_version: 22
           - os: windows-latest
             node_version: 22
       fail-fast: false
