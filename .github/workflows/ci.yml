@@ -15,14 +15,14 @@ jobs:
 
     strategy:
       matrix:
-        node_version: [18, 20, 22]
+        node_version: [20, 22, 24]
         os: [ubuntu-latest]
         include:
           # Active LTS + other OS
-          # - os: macos-latest
-          #   node_version: 22
+          - os: macos-latest
+            node_version: 24
           - os: windows-latest
-            node_version: 22
+            node_version: 24
       fail-fast: false
 
     steps:
@@ -67,10 +67,10 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      - name: Set node version to 22
+      - name: Set node version to 24
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - name: Install
@@ -92,7 +92,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    name: 'Lint: node-22, ubuntu-latest'
+    name: 'Lint: node-24, ubuntu-latest'
 
     steps:
       - uses: actions/checkout@v4
@@ -101,10 +101,10 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      - name: Set node version to 22
+      - name: Set node version to 24
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
 
       - name: Install

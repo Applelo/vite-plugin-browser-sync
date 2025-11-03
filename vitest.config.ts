@@ -29,11 +29,6 @@ export default defineConfig({
             'test/browser/**/*.{test,spec}.ts',
           ],
           maxConcurrency: 1,
-          // browser: {
-          //   enabled: true,
-          //   provider: 'playwright',
-          //   name: 'chrome',
-          // },
         },
       },
     ],
