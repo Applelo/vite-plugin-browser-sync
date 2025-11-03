@@ -2,7 +2,6 @@ import type { Options as BrowserSyncOptions } from 'browser-sync'
 import type { PreviewServer, ViteDevServer } from 'vite'
 
 export type BsMode = 'snippet' | 'proxy'
-export type BsOptions = BrowserSyncOptions
 export type ViteServer = ViteDevServer | PreviewServer
 
 interface PartOptions {
@@ -15,7 +14,7 @@ interface PartOptions {
    * BrowserSync options
    * @see  https://browsersync.io/docs/options
    */
-  bs?: BsOptions
+  bs?: BrowserSyncOptions
 }
 
 interface PartOptionsMode {
