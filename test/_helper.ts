@@ -10,6 +10,10 @@ export async function devServer(
   vite: UserConfig = {},
   demo: 'basic' | 'astro' = 'basic',
 ) {
+  plugin.bs = {
+    ...(plugin.bs || {}),
+    open: false,
+  }
   const server = await createServer({
     configFile: false,
     root: path.resolve(__dirname, `./../demo/${demo}`),
@@ -28,6 +32,11 @@ export async function previewServer(
   plugin: Options['preview'] = {},
   vite: UserConfig = {},
 ) {
+  plugin.bs = {
+    ...(plugin.bs || {}),
+    open: false,
+  }
+
   const previewServer = await preview({
     configFile: false,
     root: path.resolve(__dirname, './../demo/basic'),
@@ -64,6 +73,11 @@ export async function buildWatchServer(
   plugin: Options['buildWatch'] = {},
   vite: UserConfig = {},
 ) {
+  plugin.bs = {
+    ...(plugin.bs || {}),
+    open: false,
+  }
+
   const watcher = await new Promise<RollupWatcher>((resolve) => {
     const watcher = build({
       configFile: false,

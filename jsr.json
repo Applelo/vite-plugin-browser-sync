@@ -1,6 +1,6 @@
 {
   "name": "@applelo/vite-plugin-browser-sync",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "exports": "./src/index.ts",
   "exclude": [
     "test",
@@ -9,6 +9,6 @@
     "pnpm-workspace.yaml",
     ".npmrc",
     "eslint.config.js",
-    "tsup.config.ts"
+    "tsdown.config.ts"
   ]
 }
