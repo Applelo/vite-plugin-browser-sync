@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-browser-sync",
   "type": "module",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "packageManager": "pnpm@10.20.0",
   "description": "Add BrowserSync in your Vite project",
   "author": "Applelo",
@@ -21,10 +21,7 @@
     "vite-plugin"
   ],
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+    ".": "./dist/index.js"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",

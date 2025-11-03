@@ -4,7 +4,6 @@ import { defineConfig } from 'tsdown'
 export default defineConfig({
   entry: ['src/index.ts'],
   splitting: false,
-  format: ['cjs', 'esm'],
   dts: true,
   env: {
     BS_VERSION: pkg.version,

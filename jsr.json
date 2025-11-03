@@ -1,6 +1,6 @@
 {
   "name": "@applelo/vite-plugin-browser-sync",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "exports": "./src/index.ts",
   "exclude": [
     "test",

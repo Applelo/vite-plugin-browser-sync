@@ -43,8 +43,7 @@ import { Server } from './server'
  */
 export default function VitePluginBrowserSync(options?: Options): Plugin {
   const name = 'vite-plugin-browser-sync'
-  // eslint-disable-next-line node/prefer-global/process
-  const bsClientVersion = process.env.BS_VERSION
+  const bsClientVersion = import.meta.env.BS_VERSION
   let config: ResolvedConfig
   let env: Env = 'dev'
   let bsServer: Server | null = null
