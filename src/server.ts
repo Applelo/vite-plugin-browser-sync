@@ -11,6 +11,8 @@ const defaultPorts: Record<Env, number | null> = {
   buildWatch: null,
 }
 
+const TRAILING_PORT_REGEX = /:(\d+)$/
+
 /**
  * Hook browsersync server on vite
  */
@@ -199,7 +201,7 @@ export class Server {
    */
   private log() {
     const colorUrl = (url: string) =>
-      lightYellow(url.replace(/:(\d+)$/, (_, port) => `:${bold(port)}/`))
+      lightYellow(url.replace(TRAILING_PORT_REGEX, (_, port) => `:${bold(port)}/`))
 
     const urls: Record<string, string> = this.bsServer.getOption('urls').toJS()
     const consoleTexts: Record<string, string> = {
@@ -210,9 +212,9 @@ export class Server {
       'tunnel': 'Tunnel',
     }
     for (const key in consoleTexts) {
-      if (Object.prototype.hasOwnProperty.call(consoleTexts, key)) {
+      if (Object.hasOwn(consoleTexts, key)) {
         const text = consoleTexts[key]
-        if (Object.prototype.hasOwnProperty.call(urls, key)) {
+        if (Object.hasOwn(urls, key)) {
           this.config.logger.info(
             `  ${lightYellow('➜')}  ${bold(
               `BrowserSync - ${text}`,

@@ -1,5 +1,28 @@
+shellEmulator: true
+
+trustPolicy: no-downgrade
+
 packages:
   - demo/**
+
+catalog:
+  '@antfu/eslint-config': ^8.1.1
+  '@astrojs/check': ^0.9.8
+  '@types/browser-sync': ^2.29.1
+  '@types/node': ^24.12.2
+  '@vitejs/plugin-vue': ^6.0.1
+  '@vitest/coverage-v8': ^4.1.4
+  astro: ^6.1.5
+  browser-sync: ^3.0.4
+  eslint: ^10.2.0
+  eslint-import-resolver-node: ^0.3.10
+  kolorist: ^1.8.0
+  playwright: ^1.59.1
+  rollup: ^4.60.1
+  tsdown: ^0.21.7
+  typescript: ^6.0.2
+  vite: ^7.3.2
+  vitest: ^4.1.4
 
 onlyBuiltDependencies:
   - esbuild
