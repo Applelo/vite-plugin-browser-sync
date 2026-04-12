@@ -7,7 +7,6 @@
     "demo",
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
-    ".npmrc",
     "eslint.config.js",
     "tsdown.config.ts"
   ]
