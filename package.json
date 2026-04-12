@@ -51,9 +51,9 @@
     "vite": "^7.0.0 || ^8.0.0"
   },
   "dependencies": {
-    "@types/browser-sync": "^2.29.1",
-    "browser-sync": "^3.0.4",
-    "kolorist": "^1.8.0"
+    "@types/browser-sync": "catalog:",
+    "browser-sync": "catalog:",
+    "kolorist": "catalog:"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:",
